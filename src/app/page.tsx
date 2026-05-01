@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Camera, MessageCircle, Send } from "lucide-react";
+import { Camera, MessageCircle, Send, Video } from "lucide-react";
 
 export default function Home() {
   return (
@@ -26,7 +26,7 @@ export default function Home() {
 
         <div className="flex justify-center gap-6 pt-6">
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/alany.sfashion"
             target="_blank"
             rel="noopener noreferrer"
             className="p-3 bg-white rounded-full shadow-md hover:shadow-xl hover:scale-110 transition-all duration-300 text-pink-500"
@@ -34,7 +34,15 @@ export default function Home() {
             <Camera size={24} />
           </a>
           <a
-            href="https://wa.me/1234567890"
+            href="https://www.tiktok.com/@alanyfashionof"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3 bg-white rounded-full shadow-md hover:shadow-xl hover:scale-110 transition-all duration-300 text-black"
+          >
+            <Video size={24} />
+          </a>
+          <a
+            href="https://wa.me/12132848974"
             target="_blank"
             rel="noopener noreferrer"
             className="p-3 bg-white rounded-full shadow-md hover:shadow-xl hover:scale-110 transition-all duration-300 text-green-500"
@@ -42,8 +50,10 @@ export default function Home() {
             <MessageCircle size={24} />
           </a>
           <a
-            href="mailto:contacto@alanysfashion.com"
-            className="p-3 bg-white rounded-full shadow-md hover:shadow-xl hover:scale-110 transition-all duration-300 text-amber-500"
+            href="https://www.facebook.com/profile.php?id=61557055291662"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3 bg-white rounded-full shadow-md hover:shadow-xl hover:scale-110 transition-all duration-300 text-blue-600"
           >
             <Send size={24} />
           </a>
