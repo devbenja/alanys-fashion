@@ -1,68 +1,36 @@
-import Image from "next/image";
-import { Camera, MessageCircle, Send, Video } from "lucide-react";
+import Navbar from '@/components/Navbar';
+import Hero from '@/components/Hero';
+import CategoryList from '@/components/CategoryList';
+import ProductGrid from '@/components/ProductGrid';
+import Banner from '@/components/Banner';
+import Newsletter from '@/components/Newsletter';
+import Footer from '@/components/Footer';
+
+const bestSellers = [
+  { id: '1', name: 'Vestido Floral de Verano', price: '$45.00', image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80' },
+  { id: '2', name: 'Blusa de Seda Elegante', price: '$35.00', image: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80' },
+  { id: '3', name: 'Pantalón Casual Recto', price: '$50.00', image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80' },
+  { id: '4', name: 'Zapatos de Tacón Clásicos', price: '$65.00', image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80' },
+];
+
+const newArrivals = [
+  { id: '5', name: 'Bolso de Cuero Minimalista', price: '$80.00', image: 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80' },
+  { id: '6', name: 'Chaqueta Denim Oversize', price: '$75.00', image: 'https://images.unsplash.com/photo-1601333144130-8cbb312386b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80' },
+  { id: '7', name: 'Falda Plisada Midi', price: '$40.00', image: 'https://images.unsplash.com/photo-1583496661160-c588c443c982?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80' },
+  { id: '8', name: 'Gafas de Sol Retro', price: '$25.00', image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80' },
+];
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200">
-      <div className="text-center space-y-8 p-6">
-        <Image
-          src="/alanays-fashion-logo.png"
-          alt="Alanys Fashion Logo"
-          width={220}
-          height={220}
-          className="object-contain mx-auto drop-shadow-lg"
-          priority
-        />
-        
-        <div className="space-y-3">
-          <h1 className="text-4xl md:text-5xl font-light tracking-wider text-gray-800">
-            MUY PRONTO
-          </h1>
-          <p className="text-gray-500 text-lg font-light max-w-md mx-auto">
-            Estamos preparando algo especial para ti. 
-            <span className="block mt-2">Mantente atento.</span>
-          </p>
-        </div>
-
-        <div className="flex justify-center gap-6 pt-6">
-          <a
-            href="https://www.instagram.com/alany.sfashion"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 bg-white rounded-full shadow-md hover:shadow-xl hover:scale-110 transition-all duration-300 text-pink-500"
-          >
-            <Camera size={24} />
-          </a>
-          <a
-            href="https://www.tiktok.com/@alanyfashionof"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 bg-white rounded-full shadow-md hover:shadow-xl hover:scale-110 transition-all duration-300 text-black"
-          >
-            <Video size={24} />
-          </a>
-          <a
-            href="https://wa.me/12132848974"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 bg-white rounded-full shadow-md hover:shadow-xl hover:scale-110 transition-all duration-300 text-green-500"
-          >
-            <MessageCircle size={24} />
-          </a>
-          <a
-            href="https://www.facebook.com/profile.php?id=61557055291662"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 bg-white rounded-full shadow-md hover:shadow-xl hover:scale-110 transition-all duration-300 text-blue-600"
-          >
-            <Send size={24} />
-          </a>
-        </div>
-
-        <p className="text-gray-400 text-sm pt-8">
-          © 2026 Alanys Fashion. Todos los derechos reservados.
-        </p>
-      </div>
-    </main>
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <Hero />
+      <CategoryList />
+      <ProductGrid title="Our Best Sellers" products={bestSellers} />
+      <Banner />
+      <ProductGrid title="New Arrivals" products={newArrivals} />
+      <Newsletter />
+      <Footer />
+    </div>
   );
 }
