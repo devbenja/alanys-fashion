@@ -1,0 +1,447 @@
+<!DOCTYPE html><html class="light" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>CandyStyle | Catálogo Vibrante</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-error-container": "#93000a",
+                "primary-fixed-dim": "#eab9ce",
+                "on-tertiary-fixed": "#211b05",
+                "tertiary-fixed-dim": "#d2c6a3",
+                "tertiary-fixed": "#efe2bd",
+                "tertiary": "#675e41",
+                "surface-container-high": "#e9e8e9",
+                "on-tertiary-container": "#60583c",
+                "on-surface-variant": "#4f4448",
+                "surface-container-low": "#f5f3f4",
+                "on-primary-fixed-variant": "#603c4d",
+                "on-secondary": "#ffffff",
+                "outline": "#817478",
+                "secondary-fixed": "#c6e8f8",
+                "inverse-surface": "#303031",
+                "surface-container-lowest": "#ffffff",
+                "surface-tint": "#7a5365",
+                "surface-variant": "#e4e2e3",
+                "primary-fixed": "#ffd8e7",
+                "on-background": "#1b1c1d",
+                "inverse-on-surface": "#f2f0f1",
+                "tertiary-container": "#dbcfab",
+                "background": "#fbf9fa",
+                "on-secondary-fixed-variant": "#2a4b58",
+                "surface-dim": "#dbd9da",
+                "surface": "#fbf9fa",
+                "on-error": "#ffffff",
+                "outline-variant": "#d2c2c7",
+                "on-tertiary": "#ffffff",
+                "surface-bright": "#fbf9fa",
+                "on-primary-fixed": "#2f1121",
+                "on-primary": "#ffffff",
+                "surface-container": "#efedee",
+                "secondary": "#436370",
+                "inverse-primary": "#eab9ce",
+                "on-secondary-container": "#476775",
+                "on-secondary-fixed": "#001f29",
+                "secondary-fixed-dim": "#aaccdb",
+                "error-container": "#ffdad6",
+                "on-tertiary-fixed-variant": "#4e462b",
+                "on-primary-container": "#734d5f",
+                "primary-container": "#f4c2d7",
+                "primary": "#7a5365",
+                "on-surface": "#1b1c1d",
+                "error": "#ba1a1a",
+                "secondary-container": "#c3e5f5"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.5rem",
+                "lg": "0.5rem",
+                "xl": "0.5rem",
+                "full": "0.5rem"
+        },
+        "spacing": {
+                "container-margin": "32px",
+                "sm": "8px",
+                "lg": "24px",
+                "unit": "4px",
+                "xl": "48px",
+                "gutter": "20px",
+                "xs": "4px",
+                "md": "16px"
+        },
+        "fontFamily": {
+                "h2": [
+                        "DM Sans"
+                ],
+                "h1": [
+                        "DM Sans"
+                ],
+                "body-md": [
+                        "DM Sans"
+                ],
+                "label-caps": [
+                        "DM Sans"
+                ],
+                "body-lg": [
+                        "DM Sans"
+                ]
+        },
+        "fontSize": {
+                "h2": [
+                        "32px",
+                        {
+                                "lineHeight": "1.3",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "h1": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "1.0",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }</script>
+<style>
+        body { font-family: 'DM Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bouncy-hover:hover {
+            transform: scale(1.03);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar Shell -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-3 max-w-7xl mx-auto bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md rounded-lg mt-4 border border-outline-variant shadow-sm font-['DM_Sans'] font-medium tracking-tight">
+<div class="text-2xl font-black text-primary tracking-tighter">AlanysFashion</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 hover:scale-105 transition-all duration-300 ease-out" href="#">New In</a>
+<a class="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out" href="#">Clothing</a>
+<a class="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out" href="#">Shoes</a>
+<a class="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out" href="#">Accessories</a>
+<a class="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out" href="#">Sale</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-high border-none rounded-lg ring-2 ring-transparent focus:ring-primary transition-all outline-none text-sm w-48" placeholder="Search..." type="text">
+</div>
+<div class="flex gap-3 text-primary">
+<button class="active:scale-95 transition-transform duration-200"><span class="material-symbols-outlined">favorite</span></button>
+<button class="active:scale-95 transition-transform duration-200 relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-tertiary text-on-tertiary text-[10px] w-4 h-4 flex items-center justify-center rounded-full">3</span>
+</button>
+<button class="active:scale-95 transition-transform duration-200"><span class="material-symbols-outlined">person</span></button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+<!-- Header Section -->
+<header class="mb-12">
+<h1 class="text-5xl md:text-7xl font-black text-primary tracking-tight leading-none mb-4">
+                EXPLORE <br><span class="text-secondary">THE JOY</span>
+</h1>
+<p class="text-lg text-on-surface-variant max-w-lg font-medium">Find your next favorite piece in our vibrant collection of playful fashion and accessories.</p>
+</header>
+<div class="flex flex-col lg:flex-row gap-10">
+<!-- Sidebar Filters -->
+<aside class="w-full lg:w-72 space-y-8 shrink-0">
+<div class="bg-surface p-8 rounded-lg shadow-sm border border-outline-variant">
+<h3 class="text-xl font-bold text-secondary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">tune</span> Filters
+                    </h3>
+<div class="space-y-6">
+<!-- Category Filter -->
+<div>
+<span class="text-sm font-bold uppercase tracking-wider text-on-surface-variant block mb-4">Category</span>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded-lg border-2 border-primary text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox">
+<span class="text-on-surface font-medium group-hover:text-primary transition-colors">Dresses</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded-lg border-2 border-outline text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox">
+<span class="text-on-surface font-medium group-hover:text-primary transition-colors">Summer Tops</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded-lg border-2 border-outline text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox">
+<span class="text-on-surface font-medium group-hover:text-primary transition-colors">Bags &amp; Totes</span>
+</label>
+</div>
+</div>
+<!-- Color Filter -->
+<div>
+<span class="text-sm font-bold uppercase tracking-wider text-on-surface-variant block mb-4">Color Pop</span>
+<div class="flex flex-wrap gap-3">
+<button class="w-8 h-8 rounded-full bg-primary ring-2 ring-offset-2 ring-primary transition-transform hover:scale-110"></button>
+<button class="w-8 h-8 rounded-full bg-secondary ring-2 ring-offset-2 ring-transparent hover:ring-secondary transition-transform hover:scale-110"></button>
+<button class="w-8 h-8 rounded-full bg-tertiary ring-2 ring-offset-2 ring-transparent hover:ring-tertiary transition-transform hover:scale-110"></button>
+<button class="w-8 h-8 rounded-full bg-yellow-400 ring-2 ring-offset-2 ring-transparent hover:ring-yellow-400 transition-transform hover:scale-110"></button>
+<button class="w-8 h-8 rounded-full bg-emerald-400 ring-2 ring-offset-2 ring-transparent hover:ring-emerald-400 transition-transform hover:scale-110"></button>
+</div>
+</div>
+<!-- Price Range -->
+<div>
+<span class="text-sm font-bold uppercase tracking-wider text-on-surface-variant block mb-4">Price Range</span>
+<input class="w-full accent-primary h-2 bg-surface-container rounded-lg appearance-none cursor-pointer" type="range">
+<div class="flex justify-between mt-2 text-sm font-bold text-secondary">
+<span class="">$10</span>
+<span class="">$250</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-primary-container p-6 rounded-lg shadow-inner flex items-center justify-center text-center relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-on-primary-container font-black text-xl leading-tight">JOIN THE CLUB<br>GET 20% OFF</p>
+<button class="mt-4 px-6 py-2 bg-surface text-primary font-bold rounded-lg hover:shadow-lg transition-all active:scale-95">Sign Up</button>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-on-primary-container/20 text-8xl group-hover:rotate-12 transition-transform">celebration</span>
+</div>
+</aside>
+<!-- Product Grid -->
+<section class="flex-1">
+<div class="flex justify-between items-center mb-8">
+<p class="text-on-surface-variant font-medium">Showing <span class="text-on-surface font-bold">24 items</span> for "Summer"</p>
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-on-surface-variant">Sort by:</span>
+<select class="bg-surface border border-outline-variant rounded-lg py-2 px-6 shadow-sm font-bold text-on-surface focus:ring-primary text-sm cursor-pointer">
+<option>Most Popular</option>
+<option>Price: Low to High</option>
+<option>Newest Arrivals</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Product Card 1 -->
+<div class="group bg-surface rounded-lg p-4 shadow-sm border border-outline-variant flex flex-col bouncy-hover">
+<div class="relative aspect-[4/5] rounded-lg overflow-hidden mb-4 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A fashion forward model wearing a vibrant hot pink summer dress with a playful silhouette, posed against a clean pastel sky blue background. The lighting is bright and cheerful, highlighting the soft texture of the fabric. The overall mood is high-energy and joyful, consistent with a playful Candy style ecommerce brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI7SORgUGmrRe9tXxTbnxgpjvJfHoKTpqK--rp-CoEfJeNz9XKJaaqITeD5iOhSAcc1FqK7gBxHt9o5tiUxOLlKiRUq8tSffwUoWqCgbTdVj-nFpIgneufnB3R_1ZXjsQRNbFjzCwPkeZA6I0PUJz5NA6c_nrt4fmpnTpQTWfowmbZwUsixJkzEqnkA9gI8JgCTM5HfI2PYmjl1kVRmuume4XLo_wE_o_VBFyFPjcZ447BKZI06nj5b5Y8HzCj9rUMPK3sg_Jl_MM3">
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<div class="absolute bottom-4 left-4">
+<span class="px-4 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold rounded-lg">New Arrival</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="text-xl font-bold text-on-surface mb-1">Pink Sorbet Gown</h3>
+<p class="text-on-surface-variant text-sm mb-4 font-medium">Summer Collection • 100% Organic Cotton</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-2xl font-black text-secondary">$89.00</span>
+<button class="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">add_shopping_cart</span>
+                                    Add
+                                </button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group bg-surface rounded-lg p-4 shadow-sm border border-outline-variant flex flex-col bouncy-hover">
+<div class="relative aspect-[4/5] rounded-lg overflow-hidden mb-4 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A stylish purple leather crossbody bag featured in a high-key product photography shot. The bag rests on a stack of playful geometric blocks in pastel pink and sky blue. Lighting is soft and shadowless, creating a dreamy, vibrant atmosphere that aligns with the playful Candy brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdRVTJVjbdk1Ksg-PVGMPnJRNLU4IHhvUz5z9QPWqKvW8PE4PPdXEx9UIqIIW0BS1i6d7414xNuwTTRK0WRCml2Iho6YeedwsV0VBQFiBk2yPsJDh17q6zZQoZr0Ivx9OQ9QfdI3roLNktRnd-HG4rIOMH-oegRp1NilPVjGSshUSC33YJnvPzSUykwk0hUC8y4y7msNGyVIz2QpWS8b8w0zZU4fzT07tyK8xS7kQSBJcFdCUI52vB3UWo8B7yf0i_tB43V825iJPx">
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="text-xl font-bold text-on-surface mb-1">Lavender Dreams Bag</h3>
+<p class="text-on-surface-variant text-sm mb-4 font-medium">Accessories • Limited Edition</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-2xl font-black text-secondary">$124.00</span>
+<button class="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">add_shopping_cart</span>
+                                    Add
+                                </button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group bg-surface rounded-lg p-4 shadow-sm border border-outline-variant flex flex-col bouncy-hover">
+<div class="relative aspect-[4/5] rounded-lg overflow-hidden mb-4 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Modern high-top sneakers in a mix of sky blue and light lilac colors. The shoes are shown in a dynamic mid-air freeze-frame pose over a bright white studio floor. The aesthetic is clean, energetic, and features the vibrant pop of the Candy style design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4lkedz3XGhbkrd_tA-bdU2V7ATgUuOnlVHMltokY2GLo9ZoR_F8WJm9OgxyQB9j-oXkwWsiUVpYerB5LqHybdLuFxAUPdzPkrRPX7oGMG7EBSCV-qN_tlaSFR7-LHEj9Niz_CVa3l-r0BNJ0iF8FpfcPR1yvgWKz3-HZRkOFJoytabMmfooRyzw8ljSVhmVc3UpOdJ2jwC-yOB3-5pwfSbT5yOSSCGbhtq6iz5cGCnUKhMwEQZfFvyjkn8HwH2i3b6PCuncZ_ovmZ">
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<div class="absolute bottom-4 left-4">
+<span class="px-4 py-1 bg-secondary-fixed text-on-secondary-fixed text-xs font-bold rounded-lg">Selling Fast</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="text-xl font-bold text-on-surface mb-1">Sky High Trainers</h3>
+<p class="text-on-surface-variant text-sm mb-4 font-medium">Footwear • Multi-color</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-2xl font-black text-secondary">$145.00</span>
+<button class="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">add_shopping_cart</span>
+                                    Add
+                                </button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group bg-surface rounded-lg p-4 shadow-sm border border-outline-variant flex flex-col bouncy-hover">
+<div class="relative aspect-[4/5] rounded-lg overflow-hidden mb-4 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A pair of stylish, playful denim shorts with colorful embroidery of candies and stars. The shorts are laid flat on a vibrant pastel yellow background with soft, diffused sunlight casting gentle shadows. The colors are saturated and the details are sharp, reflecting the joyful spirit of the collection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBfN42SOJx5QcTOMo2LVTI9bOTu2y1I7iin8m_1poiRF0IKL5mWWAPypBUm7dBeUmA-ADuLLVekKK4GLcd-k81iLsqx6XIBwiJbaK-d1qCHJOI2AB28KCfMyrwi1HM-5n3JYgbPA6t2l8GZAJPseHaVW6C1JoNJs1aTwLq4Kh2uqokFMnP34nXSqA1klEedSAPkEvG6sxyUbVYa-5BeMNtSF28pQLgHxpu_0QqhliSFnz_rS6hVkZE_tgQiSSPPipQGdv4kYVJEofr">
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="text-xl font-bold text-on-surface mb-1">Sweet Stitch Shorts</h3>
+<p class="text-on-surface-variant text-sm mb-4 font-medium">Denim • Embroidered</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-2xl font-black text-secondary">$55.00</span>
+<button class="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">add_shopping_cart</span>
+                                    Add
+                                </button>
+</div>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="group bg-surface rounded-lg p-4 shadow-sm border border-outline-variant flex flex-col bouncy-hover">
+<div class="relative aspect-[4/5] rounded-lg overflow-hidden mb-4 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A bright white oversized cotton t-shirt featuring a large, stylized graphic of a dripping candy in hot pink and purple. The shirt is worn by a happy model against a solid sky blue studio wall. The lighting is direct and high-contrast to emphasize the vibrant brand colors and clean design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjd5BxV6Bo2wGzkCKgOK39FYgI5ypoKEz1YiMQ1RSwuoLyia4OF6J_lh-HtDUSA3l-8on23dv3gouE0yDvc_zlo1cPLKpnrYgXg75A-XtVDH4Npj4DMtTuI8xurA4XQqL_LPFikV7HDwZpeXrs-Z5JsW9aiqLk0dTw7JGxn0f1uDvCT6YKIHmHfI4wIiVNwa0PbrVle05kuCulON9AlOWl4askFqkQg0RN0siuyXrVW5umtJjdilJAywRHWW9o12DCFNWX5n3qifrM">
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="text-xl font-bold text-on-surface mb-1">Graphic Candy Tee</h3>
+<p class="text-on-surface-variant text-sm mb-4 font-medium">Essentials • 100% Cotton</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-2xl font-black text-secondary">$32.00</span>
+<button class="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">add_shopping_cart</span>
+                                    Add
+                                </button>
+</div>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="group bg-surface rounded-lg p-4 shadow-sm border border-outline-variant flex flex-col bouncy-hover">
+<div class="relative aspect-[4/5] rounded-lg overflow-hidden mb-4 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A tiered summer sundress in a playful lemon yellow and sky blue floral pattern. The dress is displayed on a minimal wooden hanger against a textured light pink wall. Warm, natural afternoon light flows into the frame, creating a soft, welcoming and cheerful feeling aligned with the joyful pop aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZpWns0gcOCt4BMAwj7oTg0vKCB5TkcvVJPXMMFvScIlrBmywlgbbE0uUAwCJd0vmQC1VdiOARUq5UlnT2WK9k82isYn54a4AflV-5h7sXlHbEyytkSSEyeSNH-Upmux-W022O92gUAk4Jat4iTD3tI3lFZsmOE5og5KYgc5iTQco3Ngqjp89-Pc_BvmEyYukBKetkJzBSF8BEgDoxooL51RqRi4VCdnPF_rHxSslc8ef5MjNaBz6WjrnG4ytZejcpMX0a2I-Hfben">
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<div class="absolute bottom-4 left-4">
+<span class="px-4 py-1 bg-error text-on-error text-xs font-bold rounded-lg">-30% OFF</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="text-xl font-bold text-on-surface mb-1">Lemon Fizz Sundress</h3>
+<p class="text-on-surface-variant text-sm mb-4 font-medium">Summer Sale • Light Chiffon</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-2xl font-black text-secondary">$49.00 <span class="text-sm line-through text-on-surface-variant opacity-60 ml-2">$70</span></span>
+<button class="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">add_shopping_cart</span>
+                                    Add
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-16 flex justify-center gap-3">
+<button class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-on-surface-variant font-bold border-2 border-transparent hover:border-primary transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold shadow-sm">1</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-on-surface-variant font-bold border-2 border-transparent hover:border-primary transition-all">2</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-on-surface-variant font-bold border-2 border-transparent hover:border-primary transition-all">3</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-on-surface-variant font-bold border-2 border-transparent hover:border-primary transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="bg-surface-container-low rounded-t-lg mt-20 border-t border-outline-variant">
+<div class="w-full px-12 py-16 grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+<div class="space-y-4">
+<div class="text-xl font-black text-primary">CandyStyle</div>
+<p class="text-sm font-['DM_Sans'] text-on-surface-variant leading-relaxed">Spreading joy and vibrant fashion since 2024. Your destination for playful, modern style that speaks your language.</p>
+<div class="flex gap-4">
+<button class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined">share</span></button>
+<button class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-primary hover:scale-110 transition-transform"><span class="material-symbols-outlined">play_circle</span></button>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="text-primary font-bold uppercase text-xs tracking-widest">Shop</h4>
+<ul class="space-y-2">
+<li class=""><a class="text-on-surface-variant font-['DM_Sans'] text-sm hover:text-primary transition-colors" href="#">New In</a></li>
+<li class=""><a class="text-on-surface-variant font-['DM_Sans'] text-sm hover:text-primary transition-colors" href="#">Best Sellers</a></li>
+<li class=""><a class="text-on-surface-variant font-['DM_Sans'] text-sm hover:text-primary transition-colors" href="#">Sale</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="text-primary font-bold uppercase text-xs tracking-widest">Help</h4>
+<ul class="space-y-2">
+<li class=""><a class="text-on-surface-variant font-['DM_Sans'] text-sm hover:text-primary transition-colors cursor-pointer" href="#">Shipping</a></li>
+<li class=""><a class="text-on-surface-variant font-['DM_Sans'] text-sm hover:text-primary transition-colors cursor-pointer" href="#">Returns</a></li>
+<li class=""><a class="text-on-surface-variant font-['DM_Sans'] text-sm hover:text-primary transition-colors cursor-pointer" href="#">Contact Us</a></li>
+<li class=""><a class="text-on-surface-variant font-['DM_Sans'] text-sm hover:text-primary transition-colors cursor-pointer" href="#">Size Guide</a></li>
+<li class=""><a class="text-on-surface-variant font-['DM_Sans'] text-sm hover:text-primary transition-colors cursor-pointer" href="#">Privacy</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="text-primary font-bold uppercase text-xs tracking-widest">Newsletter</h4>
+<p class="text-sm text-on-surface-variant">Sweet deals straight to your inbox.</p>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface border border-outline-variant rounded-lg px-4 text-sm focus:ring-primary focus:border-primary outline-none" placeholder="Email" type="email">
+<button class="bg-primary text-on-primary p-2 rounded-lg hover:bg-primary/90 transition-colors"><span class="material-symbols-outlined">arrow_forward</span></button>
+</div>
+</div>
+</div>
+<div class="w-full px-12 py-8 border-t border-outline-variant text-center">
+<p class="text-on-surface-variant font-['DM_Sans'] text-xs font-medium">© 2024 CandyStyle. Made with joy.</p>
+</div>
+</footer>
+<!-- FAB for focused task -->
+<div class="fixed bottom-8 right-8 z-40">
+<button class="bg-primary text-on-primary w-14 h-14 rounded-lg flex items-center justify-center shadow-sm hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined">support_agent</span>
+</button>
+</div>
+
+
+</body></html>
