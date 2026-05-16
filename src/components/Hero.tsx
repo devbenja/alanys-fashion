@@ -43,6 +43,7 @@ export default function Hero() {
             src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
             alt="Modelo vistiendo ropa de la colección de primavera"
             fill
+            sizes="50vw"
             className="object-cover object-center"
             priority
           />

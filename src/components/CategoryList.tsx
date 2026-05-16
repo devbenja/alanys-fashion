@@ -22,6 +22,7 @@ export default function CategoryList() {
                   src={category.image}
                   alt={category.name}
                   fill
+                  sizes="128px"
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
