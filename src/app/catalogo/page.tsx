@@ -1,31 +1,59 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
-async function getProducts() {
-  try {
-    const res = await fetch('http://localhost:3000/api/v1/products', { cache: 'no-store' });
-    const json = await res.json();
-    return json.success ? json.data : [];
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
-}
-
-async function getCategories() {
-  try {
-    const res = await fetch('http://localhost:3000/api/v1/categories', { cache: 'no-store' });
-    const json = await res.json();
-    return json.success ? json.data : [];
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return [];
-  }
-}
-
-export default async function Catalogo() {
-  const products = await getProducts();
-  const categories = await getCategories();
+export default function Catalogo() {
+  const mockProducts = [
+    {
+      id: "1",
+      name: "Pink Sorbet Gown",
+      description: "Summer Collection • 100% Organic Cotton",
+      price: "89.00",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCI7SORgUGmrRe9tXxTbnxgpjvJfHoKTpqK--rp-CoEfJeNz9XKJaaqITeD5iOhSAcc1FqK7gBxHt9o5tiUxOLlKiRUq8tSffwUoWqCgbTdVj-nFpIgneufnB3R_1ZXjsQRNbFjzCwPkeZA6I0PUJz5NA6c_nrt4fmpnTpQTWfowmbZwUsixJkzEqnkA9gI8JgCTM5HfI2PYmjl1kVRmuume4XLo_wE_o_VBFyFPjcZ447BKZI06nj5b5Y8HzCj9rUMPK3sg_Jl_MM3",
+      tag: "New Arrival",
+      tagColor: "bg-tertiary-fixed text-on-tertiary-fixed"
+    },
+    {
+      id: "2",
+      name: "Lavender Dreams Bag",
+      description: "Accessories • Limited Edition",
+      price: "124.00",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDdRVTJVjbdk1Ksg-PVGMPnJRNLU4IHhvUz5z9QPWqKvW8PE4PPdXEx9UIqIIW0BS1i6d7414xNuwTTRK0WRCml2Iho6YeedwsV0VBQFiBk2yPsJDh17q6zZQoZr0Ivx9OQ9QfdI3roLNktRnd-HG4rIOMH-oegRp1NilPVjGSshUSC33YJnvPzSUykwk0hUC8y4y7msNGyVIz2QpWS8b8w0zZU4fzT07tyK8xS7kQSBJcFdCUI52vB3UWo8B7yf0i_tB43V825iJPx"
+    },
+    {
+      id: "3",
+      name: "Sky High Trainers",
+      description: "Footwear • Multi-color",
+      price: "145.00",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD4lkedz3XGhbkrd_tA-bdU2V7ATgUuOnlVHMltokY2GLo9ZoR_F8WJm9OgxyQB9j-oXkwWsiUVpYerB5LqHybdLuFxAUPdzPkrRPX7oGMG7EBSCV-qN_tlaSFR7-LHEj9Niz_CVa3l-r0BNJ0iF8FpfcPR1yvgWKz3-HZRkOFJoytabMmfooRyzw8ljSVhmVc3UpOdJ2jwC-yOB3-5pwfSbT5yOSSCGbhtq6iz5cGCnUKhMwEQZfFvyjkn8HwH2i3b6PCuncZ_ovmZ",
+      tag: "Selling Fast",
+      tagColor: "bg-secondary-fixed text-on-secondary-fixed"
+    },
+    {
+      id: "4",
+      name: "Sweet Stitch Shorts",
+      description: "Denim • Embroidered",
+      price: "55.00",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBBfN42SOJx5QcTOMo2LVTI9bOTu2y1I7iin8m_1poiRF0IKL5mWWAPypBUm7dBeUmA-ADuLLVekKK4GLcd-k81iLsqx6XIBwiJbaK-d1qCHJOI2AB28KCfMyrwi1HM-5n3JYgbPA6t2l8GZAJPseHaVW6C1JoNJs1aTwLq4Kh2uqokFMnP34nXSqA1klEedSAPkEvG6sxyUbVYa-5BeMNtSF28pQLgHxpu_0QqhliSFnz_rS6hVkZE_tgQiSSPPipQGdv4kYVJEofr"
+    },
+    {
+      id: "5",
+      name: "Graphic Candy Tee",
+      description: "Essentials • 100% Cotton",
+      price: "32.00",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCjd5BxV6Bo2wGzkCKgOK39FYgI5ypoKEz1YiMQ1RSwuoLyia4OF6J_lh-HtDUSA3l-8on23dv3gouE0yDvc_zlo1cPLKpnrYgXg75A-XtVDH4Npj4DMtTuI8xurA4XQqL_LPFikV7HDwZpeXrs-Z5JsW9aiqLk0dTw7JGxn0f1uDvCT6YKIHmHfI4wIiVNwa0PbrVle05kuCulON9AlOWl4askFqkQg0RN0siuyXrVW5umtJjdilJAywRHWW9o12DCFNWX5n3qifrM"
+    },
+    {
+      id: "6",
+      name: "Lemon Fizz Sundress",
+      description: "Summer Sale • Light Chiffon",
+      price: "49.00",
+      originalPrice: "70.00",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBZpWns0gcOCt4BMAwj7oTg0vKCB5TkcvVJPXMMFvScIlrBmywlgbbE0uUAwCJd0vmQC1VdiOARUq5UlnT2WK9k82isYn54a4AflV-5h7sXlHbEyytkSSEyeSNH-Upmux-W022O92gUAk4Jat4iTD3tI3lFZsmOE5og5KYgc5iTQco3Ngqjp89-Pc_BvmEyYukBKetkJzBSF8BEgDoxooL51RqRi4VCdnPF_rHxSslc8ef5MjNaBz6WjrnG4ytZejcpMX0a2I-Hfben",
+      tag: "-30% OFF",
+      tagColor: "bg-error text-on-error"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-background text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
@@ -51,14 +79,18 @@ export default async function Catalogo() {
                 <div>
                   <span className="text-sm font-bold uppercase tracking-wider text-on-surface-variant block mb-4">Category</span>
                   <div className="space-y-3">
-                    {categories.length > 0 ? categories.map((cat: any) => (
-                      <label key={cat.id} className="flex items-center gap-3 cursor-pointer group">
-                        <input className="w-5 h-5 rounded-lg border-2 border-outline text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox" />
-                        <span className="text-on-surface font-medium group-hover:text-primary transition-colors">{cat.name}</span>
-                      </label>
-                    )) : (
-                      <p className="text-sm text-on-surface-variant">No categories found.</p>
-                    )}
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input defaultChecked className="w-5 h-5 rounded-lg border-2 border-primary text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox" />
+                      <span className="text-on-surface font-medium group-hover:text-primary transition-colors">Dresses</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input className="w-5 h-5 rounded-lg border-2 border-outline text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox" />
+                      <span className="text-on-surface font-medium group-hover:text-primary transition-colors">Summer Tops</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input className="w-5 h-5 rounded-lg border-2 border-outline text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox" />
+                      <span className="text-on-surface font-medium group-hover:text-primary transition-colors">Bags &amp; Totes</span>
+                    </label>
                   </div>
                 </div>
                 {/* Color Filter */}
@@ -96,7 +128,7 @@ export default async function Catalogo() {
           {/* Product Grid */}
           <section className="flex-1">
             <div className="flex justify-between items-center mb-8">
-              <p className="text-on-surface-variant font-medium">Showing <span className="text-on-surface font-bold">{products.length} items</span></p>
+              <p className="text-on-surface-variant font-medium">Showing <span className="text-on-surface font-bold">6 items</span></p>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-bold text-on-surface-variant">Sort by:</span>
                 <select className="bg-surface border border-outline-variant rounded-lg py-2 px-6 shadow-sm font-bold text-on-surface focus:ring-primary text-sm cursor-pointer">
@@ -108,56 +140,54 @@ export default async function Catalogo() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-              {products.length > 0 ? products.map((product: any) => (
-                <div key={product.id} className="group bg-surface rounded-lg p-4 shadow-sm border border-outline-variant flex flex-col bouncy-hover">
+              {mockProducts.map((product) => (
+                <div key={product.id} className="group bg-surface rounded-lg p-4 shadow-sm border border-outline-variant flex flex-col bouncy-hover cursor-pointer relative">
+                  <Link href={`/producto/${product.id}`} className="absolute inset-0 z-10">
+                    <span className="sr-only">View {product.name}</span>
+                  </Link>
                   <div className="relative aspect-[4/5] rounded-lg overflow-hidden mb-4 bg-surface-container">
-                    {/* Placeholder image if product.images is empty */}
                     <img 
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
                       alt={product.name} 
-                      src={product.images && product.images.length > 0 ? product.images[0].imageUrl : "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"} 
+                      src={product.image} 
                     />
-                    <button className="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-on-primary transition-colors">
+                    <button className="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-on-primary transition-colors z-20">
                       <span className="material-symbols-outlined">favorite</span>
                     </button>
-                    {product.status === 'new' && (
+                    {product.tag && (
                       <div className="absolute bottom-4 left-4">
-                        <span className="px-4 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold rounded-lg">New Arrival</span>
+                        <span className={`px-4 py-1 text-xs font-bold rounded-lg ${product.tagColor}`}>{product.tag}</span>
                       </div>
                     )}
                   </div>
                   <div className="flex-1 flex flex-col">
                     <h3 className="text-xl font-bold text-on-surface mb-1">{product.name}</h3>
-                    <p className="text-on-surface-variant text-sm mb-4 font-medium">{product.category?.name || 'Uncategorized'} • {product.description.substring(0, 30)}...</p>
+                    <p className="text-on-surface-variant text-sm mb-4 font-medium">{product.description}</p>
                     <div className="mt-auto flex items-center justify-between">
-                      <span className="text-2xl font-black text-secondary">${Number(product.price).toFixed(2)}</span>
-                      <button className="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+                      <span className="text-2xl font-black text-secondary">
+                        ${product.price}
+                        {product.originalPrice && <span className="text-sm line-through text-on-surface-variant opacity-60 ml-2">${product.originalPrice}</span>}
+                      </span>
+                      <button className="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2 z-20 relative">
                         <span className="material-symbols-outlined text-sm" style={{fontVariationSettings: '"FILL" 1'}}>add_shopping_cart</span>
                         Add
                       </button>
                     </div>
                   </div>
                 </div>
-              )) : (
-                <div className="col-span-full py-12 text-center text-on-surface-variant">
-                  <span className="material-symbols-outlined text-4xl mb-4 block">inventory_2</span>
-                  <p className="text-lg">No products found. Start by adding some via the backend!</p>
-                </div>
-              )}
+              ))}
             </div>
 
             {/* Pagination */}
-            {products.length > 0 && (
-              <div className="mt-16 flex justify-center gap-3">
-                <button className="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-on-surface-variant font-bold border-2 border-transparent hover:border-primary transition-all">
-                  <span className="material-symbols-outlined">chevron_left</span>
-                </button>
-                <button className="w-12 h-12 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold shadow-sm">1</button>
-                <button className="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-on-surface-variant font-bold border-2 border-transparent hover:border-primary transition-all">
-                  <span className="material-symbols-outlined">chevron_right</span>
-                </button>
-              </div>
-            )}
+            <div className="mt-16 flex justify-center gap-3">
+              <button className="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-on-surface-variant font-bold border-2 border-transparent hover:border-primary transition-all">
+                <span className="material-symbols-outlined">chevron_left</span>
+              </button>
+              <button className="w-12 h-12 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold shadow-sm">1</button>
+              <button className="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-on-surface-variant font-bold border-2 border-transparent hover:border-primary transition-all">
+                <span className="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
           </section>
         </div>
       </main>
