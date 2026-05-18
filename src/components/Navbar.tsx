@@ -1,50 +1,34 @@
 import Link from 'next/link';
-import { Search, User, ShoppingCart } from 'lucide-react';
 
 export default function Navbar() {
   return (
-    <nav className="w-full border-b border-gray-100 bg-white sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="text-2xl font-bold text-pink-500 tracking-tight">
-              Alanys Fashion
-            </Link>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="hidden md:flex space-x-8">
-            <Link href="/" className="text-gray-900 hover:text-pink-500 px-3 py-2 text-sm font-medium transition-colors">
-              Inicio
-            </Link>
-            <Link href="/catalogo" className="text-gray-500 hover:text-pink-500 px-3 py-2 text-sm font-medium transition-colors">
-              Catálogo
-            </Link>
-            <Link href="/colecciones" className="text-gray-500 hover:text-pink-500 px-3 py-2 text-sm font-medium transition-colors">
-              Colecciones
-            </Link>
-            <Link href="/nosotros" className="text-gray-500 hover:text-pink-500 px-3 py-2 text-sm font-medium transition-colors">
-              Nosotros
-            </Link>
-          </div>
-
-          {/* Icons */}
-          <div className="flex items-center space-x-5">
-            <button className="text-gray-500 hover:text-pink-500 transition-colors">
-              <Search className="h-5 w-5" />
-            </button>
-            <Link href="/perfil" className="text-gray-500 hover:text-pink-500 transition-colors">
-              <User className="h-5 w-5" />
-            </Link>
-            <Link href="/carrito" className="text-gray-500 hover:text-pink-500 transition-colors relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
-                2
-              </span>
-            </Link>
-          </div>
+    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-3 max-w-7xl mx-auto bg-surface-container-lowest/80 backdrop-blur-md rounded-lg mt-4 mx-4 border border-outline-variant shadow-sm font-['DM_Sans'] font-medium tracking-tight">
+      <div className="flex items-center gap-8">
+        <Link href="/" className="text-2xl font-black text-primary tracking-tighter">
+          AlanysFashion
+        </Link>
+        <div className="hidden md:flex items-center gap-6 font-medium tracking-tight">
+          <Link href="/novedades" className="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out">New In</Link>
+          <Link href="/catalogo" className="text-primary font-bold border-b-2 border-primary pb-1 hover:scale-105 hover:text-primary-fixed-dim transition-all duration-300 ease-out">Clothing</Link>
+          <Link href="/zapatos" className="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out">Shoes</Link>
+          <Link href="/accesorios" className="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out">Accessories</Link>
+          <Link href="/sale" className="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out">Sale</Link>
         </div>
+      </div>
+      <div className="flex items-center gap-4">
+        <button className="p-2 text-primary active:scale-95 transition-transform duration-200">
+          <span className="material-symbols-outlined">search</span>
+        </button>
+        <button className="p-2 text-primary active:scale-95 transition-transform duration-200">
+          <span className="material-symbols-outlined">favorite</span>
+        </button>
+        <button className="p-2 text-primary active:scale-95 transition-transform duration-200 relative">
+          <span className="material-symbols-outlined">shopping_cart</span>
+          <span className="absolute -top-1 -right-1 bg-secondary text-on-secondary text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">2</span>
+        </button>
+        <button className="p-2 text-primary active:scale-95 transition-transform duration-200">
+          <span className="material-symbols-outlined">person</span>
+        </button>
       </div>
     </nav>
   );

@@ -3,50 +3,55 @@ import Image from 'next/image';
 
 export default function Hero() {
   return (
-    <div className="relative bg-pink-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="relative z-10 pb-8 bg-pink-100 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 pt-10 sm:pt-16 lg:pt-20">
-          <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-            <div className="sm:text-center lg:text-left">
-              <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                <span className="block xl:inline">Spring</span>{' '}
-                <span className="block text-pink-500 xl:inline">Collection</span>
-              </h1>
-              <p className="mt-3 text-base text-gray-700 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 font-medium">
-                30% OFF on all new arrivals
-              </p>
-              <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                <div className="rounded-md shadow">
-                  <Link
-                    href="/catalogo"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-pink-500 hover:bg-pink-600 md:py-4 md:text-lg md:px-10 transition-colors"
-                  >
-                    Comprar Ahora
-                  </Link>
-                </div>
-                <div className="mt-3 sm:mt-0 sm:ml-3">
-                  <Link
-                    href="/colecciones"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-pink-600 bg-pink-50 hover:bg-pink-200 md:py-4 md:text-lg md:px-10 transition-colors"
-                  >
-                    Ver Colección
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </main>
+    <div className="relative bg-primary-container min-h-screen flex items-center pt-24 pb-12 overflow-hidden candy-shadow-primary">
+      {/* Decorative background overlay */}
+      <div className="absolute inset-0 w-full h-full object-cover opacity-90 mix-blend-overlay bg-gradient-to-br from-white/20 to-transparent pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col lg:flex-row items-center gap-12 relative z-10">
+        
+        {/* Left Side: Text Content */}
+        <div className="lg:w-1/2 flex flex-col justify-center text-center lg:text-left z-10">
+          <span className="inline-block bg-white text-primary font-bold px-4 py-2 rounded-lg mb-6 candy-shadow-primary self-center lg:self-start">
+            BIENVENIDOS
+          </span>
+          <h1 className="text-5xl md:text-7xl font-black text-on-primary-container tracking-tighter leading-tight mb-6">
+            Fashion that <br />
+            Spreads Joy
+          </h1>
+          <p className="text-lg md:text-xl text-on-surface-variant font-medium max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed">
+            Descubre nuestra nueva línea de prendas diseñadas para brindarte comodidad y estilo. Colores vibrantes y texturas suaves que te encantarán.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <Link
+              href="/catalogo"
+              className="bg-primary text-on-primary px-8 py-4 rounded-lg font-black text-lg text-center shadow-lg shadow-primary/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+            >
+              Comprar Ahora
+              <span className="material-symbols-outlined">arrow_forward</span>
+            </Link>
+            <Link
+              href="/colecciones"
+              className="bg-white/30 backdrop-blur-md border-2 border-white text-on-primary-container px-8 py-4 rounded-lg font-black text-lg text-center hover:scale-105 transition-all active:scale-95"
+            >
+              Ver Colección
+            </Link>
+          </div>
         </div>
-      </div>
-      <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-        <div className="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full relative bg-pink-200">
-           <Image
-            src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-            alt="Modelo vistiendo ropa de la colección de primavera"
-            fill
-            className="object-cover object-center"
-            priority
-          />
+
+        {/* Right Side: Logo / Image */}
+        <div className="lg:w-1/2 w-full flex justify-center lg:justify-end items-center relative z-10 mt-12 lg:mt-0">
+           <div className="relative w-full max-w-lg aspect-square">
+             <Image
+                src="/alanays-fashion-logo.png"
+                alt="Alanys Fashion Logo"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                priority
+             />
+           </div>
         </div>
+
       </div>
     </div>
   );
