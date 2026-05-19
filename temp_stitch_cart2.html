@@ -1,0 +1,332 @@
+<!DOCTYPE html><html class="light" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>CandyStyle - Tu Carrito</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "secondary-fixed-dim": "#aaccdb",
+                "on-secondary-container": "#476775",
+                "on-secondary-fixed": "#001f29",
+                "surface-dim": "#dbd9da",
+                "on-secondary": "#ffffff",
+                "on-tertiary-fixed-variant": "#4e462b",
+                "on-primary": "#ffffff",
+                "on-surface": "#1b1c1d",
+                "on-primary-container": "#734d5f",
+                "surface-container-low": "#f5f3f4",
+                "outline-variant": "#d2c2c7",
+                "surface-variant": "#e4e2e3",
+                "surface-container": "#efedee",
+                "on-error-container": "#93000a",
+                "primary": "#7a5365",
+                "surface-container-highest": "#e4e2e3",
+                "error-container": "#ffdad6",
+                "surface": "#fbf9fa",
+                "error": "#ba1a1a",
+                "on-surface-variant": "#4f4448",
+                "on-tertiary-container": "#60583c",
+                "secondary-container": "#c3e5f5",
+                "outline": "#817478",
+                "on-primary-fixed-variant": "#603c4d",
+                "on-secondary-fixed-variant": "#2a4b58",
+                "on-tertiary": "#ffffff",
+                "secondary-fixed": "#c6e8f8",
+                "on-tertiary-fixed": "#211b05",
+                "surface-bright": "#fbf9fa",
+                "inverse-surface": "#303031",
+                "background": "#fbf9fa",
+                "tertiary-container": "#dbcfab",
+                "primary-fixed-dim": "#eab9ce",
+                "primary-container": "#f4c2d7",
+                "surface-tint": "#7a5365",
+                "on-primary-fixed": "#2f1121",
+                "secondary": "#436370",
+                "primary-fixed": "#ffd8e7",
+                "on-error": "#ffffff",
+                "surface-container-high": "#e9e8e9",
+                "tertiary": "#675e41",
+                "on-background": "#1b1c1d",
+                "inverse-on-surface": "#f2f0f1",
+                "inverse-primary": "#eab9ce",
+                "tertiary-fixed-dim": "#d2c6a3",
+                "tertiary-fixed": "#efe2bd",
+                "surface-container-lowest": "#ffffff"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "md": "16px",
+                "gutter": "20px",
+                "unit": "4px",
+                "sm": "8px",
+                "lg": "24px",
+                "xl": "48px",
+                "container-margin": "32px",
+                "xs": "4px"
+        },
+        "fontFamily": {
+                "body-lg": [
+                        "DM Sans"
+                ],
+                "h1": [
+                        "DM Sans"
+                ],
+                "body-md": [
+                        "DM Sans"
+                ],
+                "h2": [
+                        "DM Sans"
+                ],
+                "label-caps": [
+                        "DM Sans"
+                ]
+        },
+        "fontSize": {
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "h1": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "h2": [
+                        "32px",
+                        {
+                                "lineHeight": "1.3",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "1.0",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        body { font-family: 'DM Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bouncy-hover { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .bouncy-hover:hover { transform: scale(1.03); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-3 max-w-7xl mx-auto bg-surface-container-low/80 dark:bg-zinc-950/80 backdrop-blur-md rounded-lg mt-4 mx-4 border border-outline-variant dark:border-zinc-800 shadow-[0_8px_20px_rgba(224,64,160,0.12)]">
+<div class="text-2xl font-black text-primary dark:text-primary/60 tracking-tighter">AlanysFashion</div>
+<div class="hidden md:flex items-center space-x-8 font-['DM_Sans'] font-medium tracking-tight">
+<a class="text-zinc-600 dark:text-zinc-400 hover:scale-105 hover:text-primary/80 transition-all duration-300 ease-out" href="#">New In</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:scale-105 hover:text-primary/80 transition-all duration-300 ease-out" href="#">Clothing</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:scale-105 hover:text-primary/80 transition-all duration-300 ease-out" href="#">Shoes</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:scale-105 hover:text-primary/80 transition-all duration-300 ease-out" href="#">Accessories</a>
+<a class="text-zinc-600 dark:text-zinc-400 hover:scale-105 hover:text-primary/80 transition-all duration-300 ease-out" href="#">Sale</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="p-2 text-primary hover:scale-105 transition-transform active:scale-95"><span class="material-symbols-outlined">favorite</span></button>
+<button class="p-2 text-primary hover:scale-105 transition-transform active:scale-95 relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-0 right-0 bg-secondary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+</button>
+<button class="p-2 text-primary hover:scale-105 transition-transform active:scale-95"><span class="material-symbols-outlined">person</span></button>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+<header class="mb-12">
+<h1 class="text-4xl md:text-5xl font-black text-primary tracking-tight mb-2">Tu Carrito de Joyas</h1>
+<p class="text-on-surface-variant font-medium">¡Estás a un paso de hacer brillar tu estilo!</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<!-- Items Section -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Item 1 -->
+<div class="bg-surface-container-lowest rounded-lg p-6 shadow-[0_8px_30px_rgb(224,64,160,0.08)] flex items-center gap-6 bouncy-hover border border-outline-variant">
+<div class="relative h-24 w-24 flex-shrink-0">
+<img class="h-full w-full object-cover rounded-lg" data-alt="A macro close-up of a pastel pink candy-shaped necklace charm resting on a soft velvet fabric. The lighting is dreamy and high-key, highlighting the glossy textures and playful aesthetic of the CandyStyle brand. The vibrant hot pink and soft purple tones create a joyful, high-end fashion vibe suitable for a modern jewelry catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO6LPiKIG1ztlvuVsl-yJM3-H-vPiCjYufzQ22kETf9FvH7TpeMlZFN9tJNf-U9lxPgWX9NPE2hVHGok6xoWSh6TVQyztAAiuGCttI3djniDG0d-gVfZNmaqAjdXXloirl8N1kSnyB7FxhvQ7p5XKJ-SFvoXTJCQ0BesB-zquonjbwDHaV3ygih8vlrg5N88A1KfmOqJGuYLju8xCOLpvwDwLJxxbZNHBnoEysYNs4PpTIF9tEJ-BZfnCNnU4Gyht6slSBhCLojFfn">
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-bold text-xl text-on-surface">Collar "Sugar Pop"</h3>
+<p class="text-secondary font-medium">Edición Limitada</p>
+</div>
+<span class="text-xl font-black text-primary">$45.00</span>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center bg-surface-container-high rounded-lg px-4 py-1 gap-4">
+<button class="text-primary hover:scale-125 transition-transform"><span class="material-symbols-outlined text-sm">remove</span></button>
+<span class="font-bold text-on-surface">1</span>
+<button class="text-primary hover:scale-125 transition-transform"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+<button class="text-error flex items-center gap-1 text-sm font-bold opacity-70 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm">delete</span> Eliminar
+                            </button>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-lowest rounded-lg p-6 shadow-[0_8px_30px_rgb(224,64,160,0.08)] flex items-center gap-6 bouncy-hover border border-outline-variant">
+<div class="relative h-24 w-24 flex-shrink-0">
+<img class="h-full w-full object-cover rounded-lg" data-alt="A pair of bright sky blue heart-shaped earrings displayed against a playful light pink background. The earrings have a high-gloss finish and catch the light perfectly, creating soft reflections. The overall aesthetic is vibrant, fun, and modern, aligning with the playful CandyStyle identity using sky blue and pink-white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr0Nn8gWilfQYF_miu5jrkO9aJK_nZcOnKl28bOUUVKlnJfzaqWAHVb42Nr5HdJYvgNJhiwsWuWYzW9JGPIH9kRZugwtluqofLAtI2ubCGCjbcpuSMjoKCX_cFVBk91JIa1-P4h6-Xm7eGplf90XVVXMKD2sJjFwyH8ARdDcUAnIsSWe9YNZAAIHQ_T13-2MsFDvZ3LVUZ7BBGq-3CKN6e9tpyG7lDHdTkPqs5ItfzvPRHRQ1NLyTCPaBtbuuwXTNpGuVmzwSs-fKa">
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-bold text-xl text-on-surface">Pendientes "Heart Beat"</h3>
+<p class="text-tertiary font-medium">Color: Sky Blue</p>
+</div>
+<span class="text-xl font-black text-primary">$28.50</span>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center bg-surface-container-high rounded-lg px-4 py-1 gap-4">
+<button class="text-primary hover:scale-125 transition-transform"><span class="material-symbols-outlined text-sm">remove</span></button>
+<span class="font-bold text-on-surface">2</span>
+<button class="text-primary hover:scale-125 transition-transform"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+<button class="text-error flex items-center gap-1 text-sm font-bold opacity-70 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm">delete</span> Eliminar
+                            </button>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface-container-lowest rounded-lg p-6 shadow-[0_8px_30px_rgb(224,64,160,0.08)] flex items-center gap-6 bouncy-hover border border-outline-variant">
+<div class="relative h-24 w-24 flex-shrink-0">
+<img class="h-full w-full object-cover rounded-lg" data-alt="A stylish, chunky acrylic ring in a deep purple lavender shade, presented on a soft pink surface. The ring features smooth, rounded contours and a semi-translucent finish that glows under soft studio lighting. The image captures the joyful and bold spirit of contemporary candy-inspired jewelry design with vibrant accent colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpzeCNNJOysrCFUed4fxQpc6WqbRFADRJVJ05oCOrSf8a_p9ZQEdDLl5vsxhJ41XjDe0ejbz1vI5mNwJ4_3IGF6Bx33jN2Y0BbkRllpocWetiAop5DPALK0IZeg0AqigC2kQUC2wwYKMn9lb6zy61DJSzransYu7nrR9GiSyjIm2y9mc1aoG9yusCMqfO0_ceFXQqDHJAnTaNMmunl3_MSBpa_Dwua31xHH8hfLiRTSGVXdtib0pAe-7irx87z5HMHcoE85I4LJAe5">
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-bold text-xl text-on-surface">Anillo "Chunky Grape"</h3>
+<p class="text-secondary font-medium">Material: Acrílico Premium</p>
+</div>
+<span class="text-xl font-black text-primary">$15.00</span>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center bg-surface-container-high rounded-lg px-4 py-1 gap-4">
+<button class="text-primary hover:scale-125 transition-transform"><span class="material-symbols-outlined text-sm">remove</span></button>
+<span class="font-bold text-on-surface">1</span>
+<button class="text-primary hover:scale-125 transition-transform"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+<button class="text-error flex items-center gap-1 text-sm font-bold opacity-70 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm">delete</span> Eliminar
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary Section -->
+<div class="lg:col-span-4">
+<div class="bg-surface-container-low rounded-lg p-8 sticky top-32 shadow-[0_20px_50px_rgba(124,82,170,0.1)] border border-white">
+<h2 class="text-2xl font-black text-on-surface mb-6">Resumen</h2>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-on-surface-variant font-medium">
+<span class="">Subtotal</span>
+<span class="">$117.00</span>
+</div>
+<div class="flex justify-between text-on-surface-variant font-medium">
+<span class="">Envío</span>
+<span class="text-tertiary">¡Gratis!</span>
+</div>
+<div class="flex justify-between text-on-surface-variant font-medium">
+<span class="">Descuento Candy</span>
+<span class="text-primary bg-primary-container px-2 rounded-lg">-$10.00</span>
+</div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-end">
+<span class="text-xl font-bold text-on-surface">Total</span>
+<span class="text-3xl font-black text-primary">$107.00</span>
+</div>
+</div>
+<div class="space-y-4">
+<button class="w-full bg-primary-container text-on-primary-container py-4 rounded-lg font-black text-lg shadow-[0_8px_20px_rgba(224,64,160,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+                            Finalizar Pedido
+                            <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+<button class="w-full bg-[#25D366] text-white py-4 rounded-lg font-black text-lg shadow-[0_8px_20px_rgba(37,211,102,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+<path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.187-2.59-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.513-2.961-2.628-.086-.115-.718-.954-.718-1.817 0-.863.454-1.287.614-1.46.16-.173.348-.217.465-.217h.354c.113 0 .262-.045.41.32.148.365.511 1.242.556 1.334.045.092.075.198.015.32s-.09.198-.18.305c-.09.106-.188.235-.269.317-.09.09-.185.188-.08.371.106.183.47 1.055 1.001 1.527.684.608 1.26.797 1.442.887.183.09.293.075.402-.045.109-.12.463-.538.586-.721.123-.183.246-.152.413-.09.167.062 1.065.502 1.25.594.185.092.308.138.354.217.045.078.045.454-.099.859zM12 2C6.477 2 2 6.477 2 12c0 1.891.526 3.658 1.438 5.17L2 22l4.957-1.301C8.415 21.528 10.134 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.714 0-3.313-.483-4.668-1.314l-.335-.205-2.77.727.74-2.703-.226-.359C4.048 14.864 3.5 13.5 3.5 12c0-4.687 3.813-8.5 8.5-8.5s8.5 3.813 8.5 8.5-3.813 8.5-8.5 8.5z"></path>
+</svg>
+                            Pedir por WhatsApp
+                        </button>
+</div>
+<p class="mt-6 text-center text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                        Pago 100% Seguro
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-zinc-50 dark:bg-zinc-900 rounded-t-lg mt-20 border-t border-outline-variant dark:border-zinc-800">
+<div class="w-full px-12 py-16 grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="text-xl font-black text-primary dark:text-primary/60 mb-6">CandyStyle</div>
+<p class="text-zinc-500 dark:text-zinc-400 font-['DM_Sans'] text-sm leading-relaxed">Creamos piezas que celebran tu lado más divertido y colorido. Joyería pop para momentos inolvidables.</p>
+</div>
+<div class="space-y-4">
+<h4 class="font-bold text-on-surface">Explora</h4>
+<ul class="space-y-2 text-sm text-zinc-500 dark:text-zinc-400">
+<li class="hover:text-purple-500 transition-colors cursor-pointer">Shipping</li>
+<li class="hover:text-purple-500 transition-colors cursor-pointer">Returns</li>
+<li class="hover:text-purple-500 transition-colors cursor-pointer">Contact Us</li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-bold text-on-surface">Legal</h4>
+<ul class="space-y-2 text-sm text-zinc-500 dark:text-zinc-400">
+<li class="hover:text-purple-500 transition-colors cursor-pointer">Size Guide</li>
+<li class="hover:text-purple-500 transition-colors cursor-pointer">Privacy</li>
+<li class="hover:text-purple-500 transition-colors cursor-pointer">Terms</li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-bold text-on-surface">Newsletter</h4>
+<p class="text-sm text-zinc-500">Únete al club de las chuches.</p>
+<div class="flex">
+<input class="bg-white border-none rounded-l-lg px-4 w-full focus:ring-2 focus:ring-primary-container" placeholder="Tu email" type="text">
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-r-lg font-bold">Ok</button>
+</div>
+</div>
+</div>
+<div class="text-center pb-12 text-zinc-400 text-xs font-['DM_Sans']">
+            © 2024 CandyStyle. Made with joy.
+        </div>
+</footer>
+
+
+</body></html>
