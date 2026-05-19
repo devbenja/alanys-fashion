@@ -38,7 +38,14 @@ export default function Navbar() {
             </span>
           )}
         </Link>
-        <button className="p-2 text-primary active:scale-95 transition-transform duration-200">
+        <Link 
+          href="/mis-pedidos"
+          className="p-2 text-primary active:scale-95 transition-transform duration-200"
+          title="Mis Pedidos"
+        >
+          <span className="material-symbols-outlined">receipt_long</span>
+        </Link>
+        <button className="p-2 text-primary active:scale-95 transition-transform duration-200" title="Perfil">
           <span className="material-symbols-outlined">person</span>
         </button>
       </div>
