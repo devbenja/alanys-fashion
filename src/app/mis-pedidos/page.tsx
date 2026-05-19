@@ -67,10 +67,10 @@ export default function MisPedidosPage() {
               <div className="text-sm font-medium text-on-surface-variant">
                 1 Artículo: Vestido de Verano Floral
               </div>
-              <button className="bg-tertiary text-on-tertiary font-bold px-6 py-2.5 rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+              <Link href="/seguimiento" className="bg-tertiary text-on-tertiary font-bold px-6 py-2.5 rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
                 <span className="material-symbols-outlined text-sm">map</span>
                 Rastrear Pedido
-              </button>
+              </Link>
             </div>
           </div>
           {/* Order Card 3: Cancelled */}
