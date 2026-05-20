@@ -45,9 +45,9 @@ export default function Navbar() {
         >
           <span className="material-symbols-outlined">receipt_long</span>
         </Link>
-        <button className="p-2 text-primary active:scale-95 transition-transform duration-200" title="Perfil">
+        <Link href="/login" className="p-2 text-primary active:scale-95 transition-transform duration-200" title="Perfil">
           <span className="material-symbols-outlined">person</span>
-        </button>
+        </Link>
       </div>
     </nav>
   );
