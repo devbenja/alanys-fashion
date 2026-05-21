@@ -8,6 +8,37 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      borderRadius: {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      spacing: {
+        "container-margin": "32px",
+        "sm": "8px",
+        "md": "16px",
+        "gutter": "20px",
+        "unit": "4px",
+        "lg": "24px",
+        "xs": "4px",
+        "xl": "48px"
+      },
+      fontFamily: {
+        "body-lg": ["DM Sans", "sans-serif"],
+        "h1": ["DM Sans", "sans-serif"],
+        "body-md": ["DM Sans", "sans-serif"],
+        "label-caps": ["DM Sans", "sans-serif"],
+        "h2": ["DM Sans", "sans-serif"],
+        "dm-sans": ["DM Sans", "sans-serif"]
+      },
+      fontSize: {
+        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+        "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "700"}],
+        "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+      },
       colors: {
         "on-error-container": "#93000a",
         "primary-fixed-dim": "#eab9ce",
