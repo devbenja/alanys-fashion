@@ -1,8 +1,12 @@
+"use client";
+
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
 
 export default function Catalogo() {
+  const { addToCart } = useCart();
   const mockProducts = [
     {
       id: "1",
@@ -168,7 +172,19 @@ export default function Catalogo() {
                         ${product.price}
                         {product.originalPrice && <span className="text-sm line-through text-on-surface-variant opacity-60 ml-2">${product.originalPrice}</span>}
                       </span>
-                      <button className="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2 z-20 relative">
+                      <button 
+                        className="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2 z-20 relative"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          addToCart({
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            image: product.image,
+                          });
+                        }}
+                      >
                         <span className="material-symbols-outlined text-sm" style={{fontVariationSettings: '"FILL" 1'}}>add_shopping_cart</span>
                         Add
                       </button>
