@@ -14,7 +14,7 @@ export default function GestionPedidosPage() {
             <span className="material-symbols-outlined text-lg">download</span>
             Exportar CSV
           </button>
-          <button className="flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-xl text-sm font-bold shadow-sm hover:scale-105 active:scale-95 transition-all">
+          <button className="flex items-center gap-2 bg-[#F4C2D7] text-on-primary-container px-6 py-3 rounded-xl text-sm font-bold shadow-sm hover:scale-105 active:scale-95 transition-all">
             <span className="material-symbols-outlined text-lg">add</span>
             Nuevo Pedido
           </button>
@@ -222,7 +222,7 @@ export default function GestionPedidosPage() {
             <button className="px-4 py-2 bg-surface border-2 border-outline-variant rounded-xl text-on-surface-variant hover:text-primary hover:border-primary transition-colors disabled:opacity-50" disabled>
               <span className="material-symbols-outlined text-xl align-middle">chevron_left</span>
             </button>
-            <button className="px-4 py-2 bg-primary text-on-primary font-bold rounded-xl shadow-sm">1</button>
+            <button className="px-4 py-2 bg-[#F4C2D7] text-on-primary-container font-bold rounded-xl shadow-sm">1</button>
             <button className="px-4 py-2 bg-surface border-2 border-transparent text-on-surface font-medium rounded-xl hover:bg-surface-container-high transition-colors">2</button>
             <button className="px-4 py-2 bg-surface border-2 border-transparent text-on-surface font-medium rounded-xl hover:bg-surface-container-high transition-colors">3</button>
             <span className="px-2 py-2 text-on-surface-variant font-bold">...</span>

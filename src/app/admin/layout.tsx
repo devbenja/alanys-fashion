@@ -1,4 +1,7 @@
+"use client";
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 export default function AdminLayout({
@@ -6,6 +9,18 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  const getLinkClass = (href: string) => {
+    const isActive = href === '/admin'
+      ? pathname === href
+      : pathname === href || pathname.startsWith(href + '/');
+
+    return isActive
+      ? "flex items-center gap-4 px-5 py-4 text-on-primary-container bg-primary-container rounded-xl font-bold transition-all duration-200 shadow-sm hover:scale-[1.02] active:scale-[0.98]"
+      : "flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-medium transition-all duration-200 rounded-xl hover:scale-[1.02] active:scale-[0.98]";
+  };
+
   return (
     <div className="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen flex">
       {/* SideNavBar */}
@@ -16,27 +31,27 @@ export default function AdminLayout({
         </div>
         
         <nav className="flex-1 space-y-2">
-          <Link href="/admin" className="flex items-center gap-4 px-5 py-4 text-on-primary-container bg-primary-container rounded-xl font-bold transition-colors duration-200 shadow-sm">
+          <Link href="/admin" className={getLinkClass('/admin')}>
             <span className="material-symbols-outlined text-lg">dashboard</span>
             <span className="font-dm-sans text-base tracking-tight">Panel de Control</span>
           </Link>
-          <Link href="/admin/producto" className="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-medium transition-all duration-200 rounded-xl">
+          <Link href="/admin/producto" className={getLinkClass('/admin/producto')}>
             <span className="material-symbols-outlined text-lg">inventory_2</span>
             <span className="font-dm-sans text-base tracking-tight">Inventario</span>
           </Link>
-          <Link href="/admin/pedidos" className="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-medium transition-all duration-200 rounded-xl">
+          <Link href="/admin/pedidos" className={getLinkClass('/admin/pedidos')}>
             <span className="material-symbols-outlined text-lg">shopping_cart</span>
             <span className="font-dm-sans text-base tracking-tight">Pedidos</span>
           </Link>
-          <Link href="#" className="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-medium transition-all duration-200 rounded-xl">
+          <Link href="#" className={getLinkClass('#clientes')}>
             <span className="material-symbols-outlined text-lg">group</span>
             <span className="font-dm-sans text-base tracking-tight">Clientes</span>
           </Link>
-          <Link href="#" className="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-medium transition-all duration-200 rounded-xl">
+          <Link href="#" className={getLinkClass('#marketing')}>
             <span className="material-symbols-outlined text-lg">campaign</span>
             <span className="font-dm-sans text-base tracking-tight">Marketing</span>
           </Link>
-          <Link href="#" className="flex items-center gap-4 px-5 py-4 text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-medium transition-all duration-200 rounded-xl">
+          <Link href="#" className={getLinkClass('#analiticas')}>
             <span className="material-symbols-outlined text-lg">monitoring</span>
             <span className="font-dm-sans text-base tracking-tight">Analíticas</span>
           </Link>

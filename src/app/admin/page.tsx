@@ -11,7 +11,7 @@ export default function AdminDashboardPage() {
         </div>
         <div className="flex gap-4">
           <button className="bg-surface border-2 border-outline-variant text-on-surface px-6 py-3 rounded-xl text-sm font-bold hover:border-primary hover:text-primary transition-all">Exportar Datos</button>
-          <button className="bg-primary text-on-primary px-6 py-3 rounded-xl text-sm font-bold shadow-sm hover:scale-105 active:scale-95 transition-all">Agregar Nuevo Producto</button>
+          <button className="bg-[#F4C2D7] text-on-primary-container px-6 py-3 rounded-xl text-sm font-bold shadow-sm hover:scale-105 active:scale-95 transition-all">Agregar Nuevo Producto</button>
         </div>
       </div>
 
@@ -172,7 +172,7 @@ export default function AdminDashboardPage() {
                     <span className="text-base font-medium">Elena Walker</span>
                   </div>
                 </td>
-                <td className="px-8 py-6 text-base font-medium text-on-surface-variant">Caja de Macarons (12pz)</td>
+                <td className="px-8 py-6 text-base font-medium text-on-surface-variant">Bolso de Cuero Premium</td>
                 <td className="px-8 py-6 text-base text-on-surface-variant">24 Oct, 2023</td>
                 <td className="px-8 py-6 font-black text-lg">$32.00</td>
                 <td className="px-8 py-6">
@@ -249,7 +249,7 @@ export default function AdminDashboardPage() {
 
       {/* FAB */}
       <div className="fixed bottom-10 right-10 z-40">
-        <button className="bg-primary text-on-primary w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 hover:-translate-y-2 hover:shadow-primary/40 active:scale-95 transition-all">
+        <button className="bg-[#F4C2D7] text-on-primary-container w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 hover:-translate-y-2 hover:shadow-primary/30 active:scale-95 transition-all">
           <span className="material-symbols-outlined text-3xl">add</span>
         </button>
       </div>
