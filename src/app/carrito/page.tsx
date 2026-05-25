@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
@@ -9,6 +10,64 @@ import Footer from '@/components/Footer';
 
 export default function CarritoPage() {
   const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [customerName, setCustomerName] = useState('');
+  const [deliveryMethod, setDeliveryMethod] = useState<'envio' | 'retiro'>('envio');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [additionalNotes, setAdditionalNotes] = useState('');
+
+    const handleWhatsAppOrder = (e: React.FormEvent) => {
+      e.preventDefault();
+
+      const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "1234567890";
+      const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
+
+      // Emojis definidos dinámicamente mediante códigos Unicode decimales/hexadecimales
+      // para evitar que el compilador los convierta a caracteres literales con problemas de codificación.
+      const emojiStar = String.fromCodePoint(0x1F31F);      // 🌟
+      const emojiUser = String.fromCodePoint(0x1F464);      // 👤
+      const emojiPin = String.fromCodePoint(0x1F4CD);       // 📍
+      const emojiHouse = String.fromCodePoint(0x1F3E0);     // 🏠
+      const emojiChat = String.fromCodePoint(0x1F4AC);      // 💬
+      const emojiCart = String.fromCodePoint(0x1F6D2);      // 🛒
+      const emojiMoneyBill = String.fromCodePoint(0x1F4B5); // 💵
+      const emojiTruck = String.fromCodePoint(0x1F69A);     // 🚚
+      const emojiMoneyBag = String.fromCodePoint(0x1F4B0);  // 💰
+      const bullet = String.fromCodePoint(0x2022);          // •
+
+      const itemsText = cartItems.map(item => {
+        const priceValue = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+        const totalItemPrice = priceValue * item.quantity;
+        return `${bullet} *${item.name}* (x${item.quantity}) - $${totalItemPrice.toFixed(2)}`;
+      }).join('\n');
+
+      const message = `${emojiStar} *¡NUEVO PEDIDO - ALANYS FASHION!* ${emojiStar}
+
+Hola, me gustaría realizar un pedido con los siguientes detalles:
+
+${emojiUser} *Cliente:* ${customerName}
+${emojiPin} *Método:* ${deliveryMethod === 'envio' ? 'Envío a domicilio' : 'Retiro en local'}
+${deliveryMethod === 'envio' ? `${emojiHouse} *Dirección:* ${deliveryAddress}\n` : ''}${emojiChat} *Notas:* ${additionalNotes || 'Ninguna'}
+
+------------------------------------------
+${emojiCart} *Detalle de mi Carrito:*
+
+${itemsText}
+
+------------------------------------------
+${emojiMoneyBill} *Subtotal:* $${cartTotal.toFixed(2)}
+${emojiTruck} *Envío:* ¡Gratis!
+${emojiMoneyBag} *Total Neto:* $${cartTotal.toFixed(2)}
+
+Quedo atenta/o a la confirmación del pedido y los datos de pago. ¡Muchas gracias!`;
+
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedMessage}`;
+
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      setIsModalOpen(false);
+    };
 
   return (
     <div className="min-h-screen bg-background text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
@@ -112,7 +171,10 @@ export default function CarritoPage() {
                   <span className="material-symbols-outlined">rocket_launch</span>
                 </button>
                 
-                <button className="w-full bg-[#25D366] text-white py-4 rounded-lg font-black text-lg shadow-[0_8px_20px_rgba(37,211,102,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+                <button 
+                  onClick={() => setIsModalOpen(true)}
+                  className="w-full bg-[#25D366] text-white py-4 rounded-lg font-black text-lg shadow-[0_8px_20px_rgba(37,211,102,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                >
                   <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
                     <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.187-2.59-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.513-2.961-2.628-.086-.115-.718-.954-.718-1.817 0-.863.454-1.287.614-1.46.16-.173.348-.217.465-.217h.354c.113 0 .262-.045.41.32.148.365.511 1.242.556 1.334.045.092.075.198.015.32s-.09.198-.18.305c-.09.106-.188.235-.269.317-.09.09-.185.188-.08.371.106.183.47 1.055 1.001 1.527.684.608 1.26.797 1.442.887.183.09.293.075.402-.045.109-.12.463-.538.586-.721.123-.183.246-.152.413-.09.167.062 1.065.502 1.25.594.185.092.308.138.354.217.045.078.045.454-.099.859zM12 2C6.477 2 2 6.477 2 12c0 1.891.526 3.658 1.438 5.17L2 22l4.957-1.301C8.415 21.528 10.134 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.714 0-3.313-.483-4.668-1.314l-.335-.205-2.77.727.74-2.703-.226-.359C4.048 14.864 3.5 13.5 3.5 12c0-4.687 3.813-8.5 8.5-8.5s8.5 3.813 8.5 8.5-3.813 8.5-8.5 8.5z"></path>
                   </svg>
@@ -129,6 +191,132 @@ export default function CarritoPage() {
       </div>
     </main>
     <Footer />
+
+    {/* WhatsApp Order Modal */}
+    {isModalOpen && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl w-full max-w-lg shadow-[0_20px_50px_rgba(122,83,101,0.2)] overflow-hidden transition-all duration-300">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-primary to-primary-container p-6 text-white flex justify-between items-center">
+            <div>
+              <h3 className="text-2xl font-black tracking-tight">Confirmar Pedido</h3>
+              <p className="text-white/80 text-sm font-medium">Completa tus datos para enviar por WhatsApp</p>
+            </div>
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="text-white/85 hover:text-white hover:scale-110 transition-transform cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-2xl">close</span>
+            </button>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleWhatsAppOrder} className="p-6 space-y-6">
+            {/* Nombre */}
+            <div className="space-y-2">
+              <label htmlFor="customerName" className="block text-sm font-bold text-on-surface-variant uppercase tracking-wider">
+                Nombre Completo *
+              </label>
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary/60">person</span>
+                <input
+                  type="text"
+                  id="customerName"
+                  required
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                  placeholder="Ej. María Pérez"
+                  className="w-full bg-surface-container-low border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface font-semibold focus:outline-none focus:border-primary transition-colors placeholder:text-zinc-400"
+                />
+              </div>
+            </div>
+
+            {/* Método de Entrega */}
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-on-surface-variant uppercase tracking-wider">
+                Método de Entrega
+              </label>
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  type="button"
+                  onClick={() => setDeliveryMethod('envio')}
+                  className={`p-4 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all font-black cursor-pointer ${
+                    deliveryMethod === 'envio'
+                      ? 'border-primary bg-primary/5 text-primary shadow-[0_4px_15px_rgba(122,83,101,0.1)]'
+                      : 'border-outline-variant bg-transparent text-on-surface-variant hover:border-primary/50'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-2xl">local_shipping</span>
+                  Envío a Domicilio
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDeliveryMethod('retiro')}
+                  className={`p-4 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all font-black cursor-pointer ${
+                    deliveryMethod === 'retiro'
+                      ? 'border-primary bg-primary/5 text-primary shadow-[0_4px_15px_rgba(122,83,101,0.1)]'
+                      : 'border-outline-variant bg-transparent text-on-surface-variant hover:border-primary/50'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-2xl">storefront</span>
+                  Retiro en Local
+                </button>
+              </div>
+            </div>
+
+            {/* Dirección de Envío */}
+            {deliveryMethod === 'envio' && (
+              <div className="space-y-2">
+                <label htmlFor="deliveryAddress" className="block text-sm font-bold text-on-surface-variant uppercase tracking-wider">
+                  Dirección de Envío *
+                </label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-3 top-4 text-primary/60">location_on</span>
+                  <textarea
+                    id="deliveryAddress"
+                    required={deliveryMethod === 'envio'}
+                    value={deliveryAddress}
+                    onChange={(e) => setDeliveryAddress(e.target.value)}
+                    placeholder="Dirección completa, ciudad y referencias de entrega..."
+                    rows={3}
+                    className="w-full bg-surface-container-low border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface font-semibold focus:outline-none focus:border-primary transition-colors placeholder:text-zinc-400 resize-none"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Notas Adicionales */}
+            <div className="space-y-2">
+              <label htmlFor="additionalNotes" className="block text-sm font-bold text-on-surface-variant uppercase tracking-wider">
+                Notas Adicionales (Opcional)
+              </label>
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3 top-4 text-primary/60">chat</span>
+                <textarea
+                  id="additionalNotes"
+                  value={additionalNotes}
+                  onChange={(e) => setAdditionalNotes(e.target.value)}
+                  placeholder="Tallas, colores específicos o indicaciones extras..."
+                  rows={2}
+                  className="w-full bg-surface-container-low border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface font-semibold focus:outline-none focus:border-primary transition-colors placeholder:text-zinc-400 resize-none"
+                />
+              </div>
+            </div>
+
+            {/* Botón de Enviar */}
+            <button
+              type="submit"
+              className="w-full bg-[#25D366] text-white py-4 rounded-xl font-black text-lg shadow-[0_8px_20px_rgba(37,211,102,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 mt-4 cursor-pointer"
+            >
+              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.187-2.59-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.513-2.961-2.628-.086-.115-.718-.954-.718-1.817 0-.863.454-1.287.614-1.46.16-.173.348-.217.465-.217h.354c.113 0 .262-.045.41.32.148.365.511 1.242.556 1.334.045.092.075.198.015.32s-.09.198-.18.305c-.09.106-.188.235-.269.317-.09.09-.185.188-.08.371.106.183.47 1.055 1.001 1.527.684.608 1.26.797 1.442.887.183.09.293.075.402-.045.109-.12.463-.538.586-.721.123-.183.246-.152.413-.09.167.062 1.065.502 1.25.594.185.092.308.138.354.217.045.078.045.454-.099.859zM12 2C6.477 2 2 6.477 2 12c0 1.891.526 3.658 1.438 5.17L2 22l4.957-1.301C8.415 21.528 10.134 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.714 0-3.313-.483-4.668-1.314l-.335-.205-2.77.727.74-2.703-.226-.359C4.048 14.864 3.5 13.5 3.5 12c0-4.687 3.813-8.5 8.5-8.5s8.5 3.813 8.5 8.5-3.813 8.5-8.5 8.5z"></path>
+              </svg>
+              Enviar a WhatsApp
+            </button>
+          </form>
+        </div>
+      </div>
+    )}
     </div>
   );
 }
