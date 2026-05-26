@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, use } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { categoriesApi, productsApi, Category } from '@/lib/api';
+import { categoriesApi, productsApi, Category, Product } from '@/lib/api';
 
 const DEFAULT_SIZES = ['S', 'M', 'L', 'XL'];
 
@@ -18,13 +18,18 @@ const DEFAULT_COLORS: ColorVariant[] = [
   { name: 'Verde Oliva', hexCode: '#34A853' },
 ];
 
-export default function AgregarProductoAdmin() {
+export default function EditarProductoAdmin({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Dynamic Categories from DB
+  // Unwrap params using React.use() for Next.js 15
+  const unwrappedParams = use(params);
+  const id = unwrappedParams.id;
+
+  // Base Data loaded from DB
+  const [product, setProduct] = useState<Product | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   // Cloudinary settings from environment variables
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dhzlhfgtq';
@@ -35,7 +40,6 @@ export default function AgregarProductoAdmin() {
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [price, setPrice] = useState('');
-  const [salePrice, setSalePrice] = useState(''); // Decoupled / optional field
   const [stock, setStock] = useState('10');
   const [sku, setSku] = useState('');
   const [brand, setBrand] = useState('Alanys Fashion');
@@ -43,8 +47,8 @@ export default function AgregarProductoAdmin() {
   const [status, setStatus] = useState('active'); // active / draft
 
   // Variant States
-  const [selectedSizes, setSelectedSizes] = useState<string[]>(['S', 'M', 'L']);
-  const [colors, setColors] = useState<ColorVariant[]>(DEFAULT_COLORS);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [colors, setColors] = useState<ColorVariant[]>([]);
   const [newColorName, setNewColorName] = useState('');
   const [newColorHex, setNewColorHex] = useState('#F4C2D7');
   const [showColorAdd, setShowColorAdd] = useState(false);
@@ -60,29 +64,55 @@ export default function AgregarProductoAdmin() {
   const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch dynamic categories
-    const loadCategories = async () => {
+    const loadProductAndCategories = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await categoriesApi.getAll();
-        if (response.success && response.data) {
-          setCategories(response.data);
-          if (response.data.length > 0) {
-            setCategoryId(response.data[0].id);
-          }
+        const [categoriesRes, productRes] = await Promise.all([
+          categoriesApi.getAll(),
+          productsApi.getById(id),
+        ]);
+
+        if (categoriesRes.success && categoriesRes.data) {
+          setCategories(categoriesRes.data);
+        }
+
+        if (productRes.success && productRes.data) {
+          const prod = productRes.data;
+          setProduct(prod);
+          
+          // Prepopulate states
+          setName(prod.name);
+          setDescription(prod.description);
+          setCategoryId(prod.categoryId);
+          setPrice(typeof prod.price === 'number' ? prod.price.toString() : prod.price);
+          setStock(prod.stock.toString());
+          setSku(prod.sku || '');
+          setBrand(prod.brand || '');
+          setGender(prod.gender || 'Femenino');
+          setStatus(prod.status || 'active');
+          
+          setUploadedImages(prod.images ? prod.images.map(img => img.imageUrl) : []);
+          setSelectedSizes(prod.sizes ? prod.sizes.map(s => s.size) : []);
+          setColors(prod.colors ? prod.colors.map(c => ({ name: c.colorName, hexCode: c.hexCode || '#CCCCCC' })) : []);
+        } else {
+          setError(productRes.message || 'Error al obtener los detalles del producto.');
         }
       } catch (err) {
-        console.error('Failed to load categories:', err);
+        console.error('Failed to load product for editing:', err);
+        setError('Error al conectar con el servidor.');
       } finally {
-        setLoadingCategories(false);
+        setLoading(false);
       }
     };
-    loadCategories();
-  }, []);
 
-  // Direct Cloudinary Unsigned Upload
+    loadProductAndCategories();
+  }, [id]);
+
+  // Cloudinary Direct Unsigned Upload
   const handleUploadImages = async (files: FileList) => {
     if (!cloudName.trim() || !uploadPreset.trim()) {
-      alert('Por favor, ingresa tu Cloud Name y Upload Preset de Cloudinary en la pestaña lateral.');
+      alert('Configuración de Cloudinary incompleta.');
       return;
     }
 
@@ -106,7 +136,7 @@ export default function AgregarProductoAdmin() {
         });
 
         if (!response.ok) {
-          throw new Error('Error al subir a Cloudinary. Verifica las credenciales.');
+          throw new Error('Error al subir a Cloudinary.');
         }
 
         const data = await response.json();
@@ -115,7 +145,7 @@ export default function AgregarProductoAdmin() {
         }
       } catch (err: any) {
         console.error('Cloudinary upload failure:', err);
-        setError('Error al subir una de las imágenes. Verifica tu Cloud Name y Preset.');
+        setError('Error al cargar alguna de las imágenes.');
       } finally {
         completed++;
         setUploadProgress(Math.round((completed / totalFiles) * 100));
@@ -158,7 +188,7 @@ export default function AgregarProductoAdmin() {
     setColors((prev) => prev.filter((c) => c.name !== colorName));
   };
 
-  // Handle Form Submission
+  // Handle Edit Submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -172,11 +202,11 @@ export default function AgregarProductoAdmin() {
     setSubmitting(true);
 
     try {
-      // 1. Create base product in DB
       const parsedPrice = parseFloat(price);
       const parsedStock = parseInt(stock) || 0;
 
-      const productResponse = await productsApi.create({
+      // 1. Update Base Product details in DB
+      const updateResponse = await productsApi.update(id, {
         categoryId,
         name: name.trim(),
         description: description.trim(),
@@ -188,58 +218,94 @@ export default function AgregarProductoAdmin() {
         status: status,
       });
 
-      if (!productResponse.success || !productResponse.data) {
-        throw new Error(productResponse.message || 'Error al guardar el producto base.');
+      if (!updateResponse.success) {
+        throw new Error(updateResponse.message || 'Error al actualizar el producto base.');
       }
 
-      const newProductId = productResponse.data.id;
+      // 2. Self-cleaning variant updates
+      // Delete old variant records in database first
+      if (product) {
+        if (product.images && product.images.length > 0) {
+          for (const img of product.images) {
+            await productsApi.deleteImage(id, img.id);
+          }
+        }
+        if (product.sizes && product.sizes.length > 0) {
+          for (const s of product.sizes) {
+            await productsApi.deleteSize(id, s.id);
+          }
+        }
+        if (product.colors && product.colors.length > 0) {
+          for (const c of product.colors) {
+            await productsApi.deleteColor(id, c.id);
+          }
+        }
+      }
 
-      // 2. Add product images from Cloudinary
+      // 3. Save new variant sets to database
       if (uploadedImages.length > 0) {
         for (let i = 0; i < uploadedImages.length; i++) {
-          await productsApi.addImage(newProductId, {
+          await productsApi.addImage(id, {
             imageUrl: uploadedImages[i],
-            isMain: i === 0, // Mark first image as main
+            isMain: i === 0,
           });
         }
       }
 
-      // 3. Add sizes variants
       if (selectedSizes.length > 0) {
         for (const size of selectedSizes) {
-          // Distribute stock evenly among sizes for simplicity
           const stockPerSize = Math.max(1, Math.floor(parsedStock / selectedSizes.length));
-          await productsApi.addSize(newProductId, {
+          await productsApi.addSize(id, {
             size,
             stock: stockPerSize,
           });
         }
       }
 
-      // 4. Add colors variants
       if (colors.length > 0) {
         for (const color of colors) {
-          await productsApi.addColor(newProductId, {
+          await productsApi.addColor(id, {
             colorName: color.name,
             hexCode: color.hexCode,
           });
         }
       }
 
-      setSuccess('¡Producto y variantes creados exitosamente!');
-      
-      // Delay redirect to let them see the success banner
+      setSuccess('¡Producto y variantes actualizados exitosamente!');
+
       setTimeout(() => {
         router.push('/admin/producto');
       }, 2000);
 
     } catch (err: any) {
-      console.error('Failed to create complete product:', err);
-      setError(err.message || 'Ocurrió un error inesperado al guardar el producto.');
+      console.error('Failed to update product variants:', err);
+      setError(err.message || 'Error al guardar modificaciones del producto.');
     } finally {
       setSubmitting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="py-40 flex flex-col items-center justify-center text-on-surface-variant gap-4">
+        <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+        <p className="font-bold">Cargando detalles para edición...</p>
+      </div>
+    );
+  }
+
+  if (error && !product) {
+    return (
+      <div className="py-40 text-center space-y-4 max-w-md mx-auto">
+        <span className="material-symbols-outlined text-6xl text-error">warning</span>
+        <h2 className="text-3xl font-black text-primary">Error de Carga</h2>
+        <p className="text-on-surface-variant">{error}</p>
+        <Link href="/admin/producto" className="inline-block px-6 py-2.5 bg-primary text-white font-bold rounded-lg shadow-sm">
+          Volver al Inventario
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto space-y-12 relative pb-20">
@@ -248,10 +314,10 @@ export default function AgregarProductoAdmin() {
         <nav className="flex items-center gap-2 text-sm text-on-surface-variant font-medium font-dm-sans">
           <Link className="hover:text-primary transition-colors" href="/admin/producto">Inventario</Link>
           <span className="material-symbols-outlined text-xs">chevron_right</span>
-          <span className="text-secondary font-bold">Agregar Nuevo Producto</span>
+          <span className="text-secondary font-bold">Editar Producto</span>
         </nav>
-        <h2 className="text-4xl md:text-5xl font-black text-primary tracking-tight mb-3">Crear Nuevo Producto</h2>
-        <p className="text-lg text-on-surface-variant font-medium">Define la apariencia de tu producto, precio y variantes cargando imágenes con Cloudinary.</p>
+        <h2 className="text-4xl md:text-5xl font-black text-primary tracking-tight mb-3">Modificar Producto</h2>
+        <p className="text-lg text-on-surface-variant font-medium">Modifica los detalles, precios, variantes o imágenes subidas en Cloudinary.</p>
       </div>
 
       {success && (
@@ -269,9 +335,9 @@ export default function AgregarProductoAdmin() {
       )}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Primary Details */}
+        {/* Left Column */}
         <div className="col-span-1 lg:col-span-8 space-y-8">
-          {/* Basic Info Card */}
+          {/* Details Card */}
           <div className="bg-surface p-8 rounded-2xl border border-outline-variant shadow-sm">
             <h2 className="font-h2 text-xl mb-6 text-secondary font-bold flex items-center gap-2">
               <span className="material-symbols-outlined">edit_document</span>
@@ -309,14 +375,13 @@ export default function AgregarProductoAdmin() {
             </div>
           </div>
 
-          {/* Media Upload Card with Cloudinary Integration */}
+          {/* Cloudinary Images Upload */}
           <div className="bg-surface p-8 rounded-2xl border border-outline-variant shadow-sm">
             <h2 className="font-h2 text-xl mb-6 text-secondary font-bold flex items-center gap-2">
               <span className="material-symbols-outlined">cloud_upload</span>
               Imágenes del Producto (Cloudinary)
             </h2>
 
-            {/* Hidden Input File */}
             <input 
               type="file" 
               multiple 
@@ -334,17 +399,16 @@ export default function AgregarProductoAdmin() {
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-primary text-3xl">cloud_upload</span>
                 </div>
-                <h3 className="font-h2 text-lg text-on-surface font-bold">Haz clic para buscar imágenes</h3>
-                <p className="text-on-surface-variant mt-2 text-sm">Sube fotos directamente a tu almacenamiento Cloudinary</p>
+                <h3 className="font-h2 text-lg text-on-surface font-bold">Haz clic para añadir nuevas imágenes</h3>
+                <p className="text-on-surface-variant mt-2 text-sm">Sube nuevas fotos directamente a tu Cloudinary</p>
                 <button className="mt-6 px-6 py-2 border-2 border-[#F4C2D7] text-on-primary-container bg-surface rounded-lg font-bold hover:bg-[#F4C2D7] transition-all" type="button">Buscar Archivos</button>
               </div>
             </div>
 
-            {/* Uploading Progress Bar */}
             {uploading && (
               <div className="mt-6 space-y-2">
                 <div className="flex justify-between text-sm font-bold text-primary">
-                  <span>Subiendo imágenes a Cloudinary...</span>
+                  <span>Subiendo imágenes...</span>
                   <span>{uploadProgress}%</span>
                 </div>
                 <div className="w-full h-3 bg-surface-container-high rounded-full overflow-hidden">
@@ -353,7 +417,6 @@ export default function AgregarProductoAdmin() {
               </div>
             )}
 
-            {/* Render Uploaded Grid */}
             {uploadedImages.length > 0 && (
               <div className="mt-8">
                 <h4 className="text-sm font-bold text-on-surface-variant uppercase tracking-wider mb-4">Fotos Cargadas ({uploadedImages.length}):</h4>
@@ -393,7 +456,7 @@ export default function AgregarProductoAdmin() {
               Variantes y Opciones
             </h2>
             <div className="space-y-8">
-              {/* Size Variant */}
+              {/* Sizes */}
               <div className="space-y-4">
                 <label className="font-label-caps block font-bold uppercase tracking-wider text-sm text-on-surface-variant">Tallas Disponibles</label>
                 <div className="flex flex-wrap gap-3">
@@ -414,7 +477,7 @@ export default function AgregarProductoAdmin() {
                 </div>
               </div>
 
-              {/* Color Variant */}
+              {/* Colors */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <label className="font-label-caps block font-bold uppercase tracking-wider text-sm text-on-surface-variant">Colores Disponibles</label>
@@ -428,7 +491,6 @@ export default function AgregarProductoAdmin() {
                   </button>
                 </div>
 
-                {/* Inline Color Form Creator */}
                 {showColorAdd && (
                   <div className="p-4 bg-surface-container rounded-xl border border-outline-variant flex flex-col sm:flex-row gap-4 items-end animate-scale-in max-w-md">
                     <div className="flex-1 space-y-1.5">
@@ -493,11 +555,9 @@ export default function AgregarProductoAdmin() {
           </div>
         </div>
 
-        {/* Right Column: Settings & Pricing */}
+        {/* Right Column: Settings */}
         <div className="col-span-1 lg:col-span-4 space-y-8">
-          {/* Cloudinary Config is configured securely via environment variables (.env.local) */}
-
-          {/* Classification Card */}
+          {/* Classification */}
           <div className="bg-surface p-8 rounded-2xl border border-outline-variant shadow-sm">
             <h2 className="font-h2 text-xl mb-6 text-secondary font-bold flex items-center gap-2">
               <span className="material-symbols-outlined">category</span>
@@ -507,23 +567,17 @@ export default function AgregarProductoAdmin() {
               <div className="space-y-2">
                 <label className="font-label-caps block font-bold uppercase tracking-wider text-xs text-on-surface-variant">Categoría *</label>
                 <div className="relative">
-                  {loadingCategories ? (
-                    <select className="w-full bg-surface-container-low border-2 border-transparent outline-none rounded-xl px-5 py-3 text-on-surface font-medium cursor-wait" disabled>
-                      <option>Cargando categorías...</option>
-                    </select>
-                  ) : (
-                    <select 
-                      value={categoryId}
-                      onChange={(e) => setCategoryId(e.target.value)}
-                      className="w-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface-container-lowest outline-none rounded-xl px-5 py-3 transition-all text-on-surface font-medium appearance-none cursor-pointer"
-                      disabled={submitting}
-                      required
-                    >
-                      {categories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>{cat.name}</option>
-                      ))}
-                    </select>
-                  )}
+                  <select 
+                    value={categoryId}
+                    onChange={(e) => setCategoryId(e.target.value)}
+                    className="w-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface-container-lowest outline-none rounded-xl px-5 py-3 transition-all text-on-surface font-medium appearance-none cursor-pointer"
+                    disabled={submitting}
+                    required
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
+                  </select>
                   <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
                 </div>
               </div>
@@ -575,7 +629,7 @@ export default function AgregarProductoAdmin() {
             </div>
           </div>
 
-          {/* Pricing & Stock Card */}
+          {/* Pricing & Stock */}
           <div className="bg-surface p-8 rounded-2xl border border-outline-variant shadow-sm">
             <h2 className="font-h2 text-xl mb-6 text-secondary font-bold flex items-center gap-2">
               <span className="material-symbols-outlined">sell</span>
@@ -625,22 +679,20 @@ export default function AgregarProductoAdmin() {
               
               <div className="space-y-2">
                 <label className="font-label-caps block font-bold uppercase tracking-wider text-xs text-on-surface-variant">Cantidad en Stock *</label>
-                <div className="relative">
-                  <input 
-                    type="number" 
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value)}
-                    className="w-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface-container-lowest outline-none rounded-xl px-5 py-3 transition-all text-on-surface font-medium" 
-                    placeholder="0" 
-                    required
-                    disabled={submitting}
-                  />
-                </div>
+                <input 
+                  type="number" 
+                  value={stock}
+                  onChange={(e) => setStock(e.target.value)}
+                  className="w-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface-container-lowest outline-none rounded-xl px-5 py-3 transition-all text-on-surface font-medium" 
+                  placeholder="0" 
+                  required
+                  disabled={submitting}
+                />
               </div>
             </div>
           </div>
 
-          {/* Action Sidebar */}
+          {/* Action buttons */}
           <div className="space-y-4 pt-4">
             <button 
               type="submit" 
@@ -650,12 +702,12 @@ export default function AgregarProductoAdmin() {
               {submitting ? (
                 <>
                   <div className="w-5 h-5 border-2 border-on-primary-container/20 border-t-on-primary-container rounded-full animate-spin"></div>
-                  Guardando Producto...
+                  Guardando Cambios...
                 </>
               ) : (
                 <>
                   <span className="material-symbols-outlined text-xl">save</span>
-                  Guardar Producto
+                  Guardar Cambios
                 </>
               )}
             </button>

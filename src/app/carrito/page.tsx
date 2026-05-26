@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
@@ -16,6 +16,11 @@ export default function CarritoPage() {
   const [deliveryMethod, setDeliveryMethod] = useState<'envio' | 'retiro'>('envio');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [additionalNotes, setAdditionalNotes] = useState('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
     const handleWhatsAppOrder = (e: React.FormEvent) => {
       e.preventDefault();
@@ -81,7 +86,12 @@ Quedo atenta/o a la confirmación del pedido y los datos de pago. ¡Muchas graci
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* Items Section */}
         <div className="lg:col-span-8 space-y-6">
-          {cartItems.length === 0 ? (
+          {!mounted ? (
+            <div className="bg-surface-container-lowest rounded-lg p-12 text-center border border-outline-variant shadow-[0_8px_30px_rgb(224,64,160,0.08)] flex flex-col items-center justify-center gap-4">
+              <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+              <p className="font-bold text-on-surface-variant">Cargando detalles de tu carrito...</p>
+            </div>
+          ) : cartItems.length === 0 ? (
             <div className="bg-surface-container-lowest rounded-lg p-12 text-center shadow-[0_8px_30px_rgb(224,64,160,0.08)] border border-outline-variant">
               <span className="material-symbols-outlined text-6xl text-primary mb-4">shopping_bag</span>
               <h2 className="text-2xl font-bold text-on-surface mb-2">Tu carrito está vacío</h2>
@@ -140,7 +150,7 @@ Quedo atenta/o a la confirmación del pedido y los datos de pago. ¡Muchas graci
         </div>
 
         {/* Summary Section */}
-        {cartItems.length > 0 && (
+        {mounted && cartItems.length > 0 && (
           <div className="lg:col-span-4">
             <div className="bg-surface-container-low rounded-lg p-8 sticky top-32 shadow-[0_20px_50px_rgba(124,82,170,0.1)] border border-white">
               <h2 className="text-2xl font-black text-on-surface mb-6">Resumen</h2>

@@ -39,6 +39,10 @@ export default function AdminLayout({
             <span className="material-symbols-outlined text-lg">inventory_2</span>
             <span className="font-dm-sans text-base tracking-tight">Inventario</span>
           </Link>
+          <Link href="/admin/categorias" className={getLinkClass('/admin/categorias')}>
+            <span className="material-symbols-outlined text-lg">category</span>
+            <span className="font-dm-sans text-base tracking-tight">Categorías</span>
+          </Link>
           <Link href="/admin/pedidos" className={getLinkClass('/admin/pedidos')}>
             <span className="material-symbols-outlined text-lg">shopping_cart</span>
             <span className="font-dm-sans text-base tracking-tight">Pedidos</span>
