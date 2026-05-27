@@ -3,13 +3,18 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
+import { paymentsApi } from '@/lib/api';
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function CarritoPage() {
-  const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const router = useRouter();
+  const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
+  const { isAuthenticated } = useAuth();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customerName, setCustomerName] = useState('');
@@ -17,10 +22,41 @@ export default function CarritoPage() {
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [additionalNotes, setAdditionalNotes] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState('');
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleStripeCheckout = async () => {
+    if (!isAuthenticated) {
+      router.push('/login?redirect=/carrito');
+      return;
+    }
+
+    setCheckoutLoading(true);
+    setCheckoutError('');
+
+    try {
+      const items = cartItems.map(item => ({
+        productId: item.id,
+        quantity: item.quantity,
+      }));
+
+      const res = await paymentsApi.createCheckoutSession(items);
+
+      if (res.success && res.data?.url) {
+        window.location.href = res.data.url;
+      } else {
+        setCheckoutError(res.message || 'No se pudo iniciar el proceso de pago.');
+      }
+    } catch (error: any) {
+      setCheckoutError('Error al conectar con el servidor de pagos.');
+    } finally {
+      setCheckoutLoading(false);
+    }
+  };
 
     const handleWhatsAppOrder = (e: React.FormEvent) => {
       e.preventDefault();
@@ -176,9 +212,25 @@ Quedo atenta/o a la confirmación del pedido y los datos de pago. ¡Muchas graci
               </div>
 
               <div className="space-y-4">
-                <button className="w-full bg-primary-container text-on-primary-container py-4 rounded-lg font-black text-lg shadow-[0_8px_20px_rgba(224,64,160,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
-                  Finalizar Pedido
-                  <span className="material-symbols-outlined">rocket_launch</span>
+                {checkoutError && (
+                  <div className="p-3 bg-error-container text-on-error-container rounded-lg text-sm font-bold flex items-center gap-2">
+                    <span className="material-symbols-outlined text-base">error</span>
+                    {checkoutError}
+                  </div>
+                )}
+                <button
+                  onClick={handleStripeCheckout}
+                  disabled={checkoutLoading}
+                  className="w-full bg-primary text-on-primary py-4 rounded-lg font-black text-lg shadow-[0_8px_20px_rgba(224,64,160,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:pointer-events-none"
+                >
+                  {checkoutLoading ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      {isAuthenticated ? 'Pagar con Stripe' : 'Iniciar sesión para pagar'}
+                      <span className="material-symbols-outlined text-base">lock</span>
+                    </>
+                  )}
                 </button>
                 
                 <button 

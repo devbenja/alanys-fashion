@@ -1,8 +1,9 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdminLayout({
   children,
@@ -10,6 +11,27 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, loading, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!loading && (!isAuthenticated || user?.role !== 'admin')) {
+      router.replace('/');
+    }
+  }, [loading, isAuthenticated, user, router]);
+
+  if (loading) {
+    return (
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-background text-on-surface-variant gap-4 font-['DM_Sans']">
+        <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+        <p className="font-bold text-lg text-primary">Cargando Panel de Administración...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || user?.role !== 'admin') {
+    return null; // Evita el parpadeo de contenido mientras redirige
+  }
 
   const getLinkClass = (href: string) => {
     const isActive = href === '/admin'

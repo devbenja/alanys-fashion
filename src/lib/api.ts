@@ -254,3 +254,215 @@ export const productsApi = {
     return apiRequest<any>(`/products/${productId}/colors/${colorId}`, 'DELETE');
   },
 };
+
+export interface AuthUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  role: 'customer' | 'admin';
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password?: string;
+}
+
+export interface RegisterData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string;
+  phone?: string;
+  role?: string;
+}
+
+/**
+ * Authentication Service
+ */
+export const authApi = {
+  /**
+   * Log in user
+   */
+  login: async (credentials: LoginCredentials) => {
+    return apiRequest<AuthUser>('/auth/login', 'POST', credentials);
+  },
+
+  /**
+   * Register a new user
+   */
+  register: async (data: RegisterData) => {
+    return apiRequest<AuthUser>('/auth/register', 'POST', data);
+  },
+
+  /**
+   * Log out current user
+   */
+  logout: async () => {
+    return apiRequest<any>('/auth/logout', 'POST');
+  },
+
+  /**
+   * Get current authenticated user profile
+   */
+  me: async () => {
+    return apiRequest<AuthUser>('/auth/me', 'GET');
+  },
+};
+
+export interface CartItem {
+  productId: string;
+  quantity: number;
+}
+
+export interface CheckoutSessionResponse {
+  url: string;
+}
+
+export interface OrderTracking {
+  status: string;
+  description: string;
+  createdAt: string;
+}
+
+export interface OrderPayment {
+  id: string;
+  provider: string;
+  providerPaymentId: string;
+  amount: string;
+  currency: string;
+  paymentStatus: string;
+  paidAt: string | null;
+}
+
+export interface OrderItem {
+  id: string;
+  productId: string;
+  quantity: number;
+  unitPrice: string;
+  subtotal: string;
+  product: {
+    name: string;
+    images: { imageUrl: string; isMain: boolean }[];
+  };
+}
+
+export interface Order {
+  id: string;
+  orderNumber: string;
+  stripeSessionId?: string;
+  subtotal: string;
+  shippingCost: string;
+  total: string;
+  paymentStatus: string;
+  orderStatus: string;
+  trackingCode: string | null;
+  createdAt: string;
+  items: OrderItem[];
+  tracking: OrderTracking[];
+  payments?: OrderPayment[];
+}
+
+const ORDER_STATUS_LABELS: Record<string, string> = {
+  pending: 'Pendiente',
+  processing: 'En Proceso',
+  paid: 'Pagado',
+  cancelled: 'Cancelado',
+  delivered: 'Entregado',
+};
+
+const ORDER_STATUS_COLORS: Record<string, string> = {
+  pending: 'bg-amber-100 text-amber-700',
+  processing: 'bg-blue-100 text-blue-700',
+  paid: 'bg-green-100 text-green-700',
+  cancelled: 'bg-slate-100 text-slate-500',
+  delivered: 'bg-green-100 text-green-700',
+};
+
+const ORDER_STATUS_ICONS: Record<string, string> = {
+  pending: 'schedule',
+  processing: 'local_shipping',
+  paid: 'check_circle',
+  cancelled: 'cancel',
+  delivered: 'check_circle',
+};
+
+export function getOrderStatusInfo(status: string) {
+  return {
+    label: ORDER_STATUS_LABELS[status] || status,
+    color: ORDER_STATUS_COLORS[status] || 'bg-slate-100 text-slate-500',
+    icon: ORDER_STATUS_ICONS[status] || 'info',
+  };
+}
+
+/**
+ * Payments Service
+ */
+export const paymentsApi = {
+  createCheckoutSession: async (items: CartItem[]) => {
+    return apiRequest<CheckoutSessionResponse>('/payments/create-checkout-session', 'POST', { items });
+  },
+};
+
+/**
+ * Orders Service
+ */
+export const ordersApi = {
+  getAll: async () => {
+    return apiRequest<Order[]>('/orders', 'GET');
+  },
+
+  getById: async (id: string) => {
+    return apiRequest<Order>(`/orders/${id}`, 'GET');
+  },
+
+  cancel: async (sessionId: string) => {
+    return apiRequest<void>('/orders/cancel', 'POST', { sessionId });
+  },
+};
+
+export interface AdminOrder extends Order {
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+  };
+}
+
+export interface PaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
+}
+
+export interface AdminOrdersResponse extends ApiResponse<AdminOrder[]> {
+  meta?: PaginationMeta;
+}
+
+export const adminOrdersApi = {
+  getAll: async (params?: { status?: string; page?: number; limit?: number }): Promise<AdminOrdersResponse> => {
+    const query = new URLSearchParams();
+    if (params?.status) query.set('status', params.status);
+    if (params?.page) query.set('page', String(params.page));
+    if (params?.limit) query.set('limit', String(params.limit));
+    const qs = query.toString();
+    const res = await apiRequest<AdminOrder[]>(`/orders/admin${qs ? `?${qs}` : ''}`, 'GET');
+    return res as AdminOrdersResponse;
+  },
+
+  getById: async (id: string) => {
+    return apiRequest<AdminOrder>(`/orders/admin/${id}`, 'GET');
+  },
+
+  updateStatus: async (id: string, data: { status: string; description?: string; trackingCode?: string }) => {
+    return apiRequest<AdminOrder>(`/orders/admin/${id}/status`, 'PUT', data);
+  },
+};
+
+
