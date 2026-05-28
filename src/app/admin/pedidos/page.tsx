@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { adminOrdersApi, AdminOrder, getOrderStatusInfo } from '@/lib/api';
+import { adminOrdersApi, AdminOrder, OrderStats, getOrderStatusInfo } from '@/lib/api';
 
 const STATUS_OPTIONS = [
   { value: '', label: 'Todos los Estados' },
@@ -21,6 +21,7 @@ const UPDATE_STATUS_OPTIONS = [
 
 export default function GestionPedidosPage() {
   const [orders, setOrders] = useState<AdminOrder[]>([]);
+  const [stats, setStats] = useState<OrderStats>({ total: 0, processing: 0, paid: 0, delivered: 0, cancelled: 0, pending: 0, revenue: 0 });
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('');
   const [page, setPage] = useState(1);
@@ -30,9 +31,16 @@ export default function GestionPedidosPage() {
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailLoading, setDetailLoading] = useState(false);
 
+  useEffect(() => {
+    adminOrdersApi.getStats().then(res => {
+      if (res.success && res.data) setStats(res.data);
+    });
+  }, []);
+
   const loadOrders = async () => {
     setLoading(true);
     const res = await adminOrdersApi.getAll({ status: statusFilter || undefined, page, limit: 20 });
+
     if (res.success && res.data) {
       setOrders(res.data);
       if (res.meta) setMeta({ total: res.meta.total, pages: res.meta.pages });
@@ -47,13 +55,6 @@ export default function GestionPedidosPage() {
   useEffect(() => {
     loadOrders();
   }, [statusFilter, page]);
-
-  const stats = {
-    total: meta.total,
-    processing: orders.filter(o => o.orderStatus === 'processing').length,
-    delivered: orders.filter(o => o.orderStatus === 'delivered').length,
-    revenue: orders.reduce((s, o) => s + parseFloat(o.total), 0),
-  };
 
   const openDetail = async (order: AdminOrder) => {
     setDetailLoading(true);
@@ -113,8 +114,8 @@ export default function GestionPedidosPage() {
         <div className="bg-surface p-8 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
           <span className="material-symbols-outlined text-primary-fixed-dim text-3xl mb-6">payments</span>
           <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-on-surface-variant mb-2">Ingresos (esta página)</p>
-            <h3 className="text-4xl font-black text-on-surface">${stats.revenue.toFixed(2)}</h3>
+            <p className="text-sm font-bold uppercase tracking-wider text-on-surface-variant mb-2">Ingresos Totales</p>
+            <h3 className="text-4xl font-black text-on-surface">${Number(stats.revenue).toFixed(2)}</h3>
           </div>
         </div>
       </div>

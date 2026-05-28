@@ -441,11 +441,25 @@ export interface PaginationMeta {
   pages: number;
 }
 
+export interface OrderStats {
+  total: number;
+  processing: number;
+  paid: number;
+  delivered: number;
+  cancelled: number;
+  pending: number;
+  revenue: number;
+}
+
 export interface AdminOrdersResponse extends ApiResponse<AdminOrder[]> {
   meta?: PaginationMeta;
 }
 
 export const adminOrdersApi = {
+  getStats: async (): Promise<ApiResponse<OrderStats>> => {
+    return apiRequest<OrderStats>('/orders/admin/stats', 'GET');
+  },
+
   getAll: async (params?: { status?: string; page?: number; limit?: number }): Promise<AdminOrdersResponse> => {
     const query = new URLSearchParams();
     if (params?.status) query.set('status', params.status);
