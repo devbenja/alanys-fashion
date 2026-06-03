@@ -41,6 +41,8 @@ export default function GestionPedidosPage() {
     setLoading(true);
     const res = await adminOrdersApi.getAll({ status: statusFilter || undefined, page, limit: 20 });
 
+    console.log(res);
+    
     if (res.success && res.data) {
       setOrders(res.data);
       if (res.meta) setMeta({ total: res.meta.total, pages: res.meta.pages });

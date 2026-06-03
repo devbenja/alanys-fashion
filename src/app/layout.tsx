@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Alanys Fashion",
-  description: "Sitio en construcción",
+  title: "KOVA — Fashion Collective",
+  description: "Curated drops. Honest prices. No noise. Shop the latest in fashion, accessories, and footwear.",
+  keywords: ["fashion", "clothing", "accessories", "online store", "curated fashion"],
 };
 
 import { CartProvider } from "@/context/CartContext";
@@ -26,11 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <head>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-      </head>
+    <html lang="es" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
         <AuthProvider>
           <CartProvider>

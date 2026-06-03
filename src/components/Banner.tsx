@@ -1,34 +1,57 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 export default function Banner() {
   return (
-    <section className="bg-pink-50 py-16 sm:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-          <div className="relative w-full md:w-1/2 h-64 md:h-auto">
-             <Image
-              src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-              alt="Mujer feliz con bolsas de compras"
+    <section className="bg-zinc-950 py-12 md:py-24 border-y border-zinc-900">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col lg:flex-row bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl">
+          
+          {/* Image Side */}
+          <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[500px]">
+            <Image
+              src="https://picsum.photos/seed/kova-banner/1000/1000"
+              alt="Editorial campaign"
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
+            <div className="absolute inset-0 bg-zinc-950/20 mix-blend-multiply" />
           </div>
-          <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-            <h2 className="text-sm font-semibold text-pink-500 tracking-wide uppercase">Explore The Joy</h2>
-            <p className="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
-              Clothing That Makes You Feel Like Candy
+
+          {/* Text Side */}
+          <div className="w-full lg:w-1/2 p-10 md:p-16 lg:p-20 flex flex-col justify-center relative">
+            {/* Subtle background decoration */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-amber-600/5 blur-[100px] rounded-full pointer-events-none" />
+
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-px w-6 bg-amber-600" />
+              <span className="text-[10px] font-bold text-amber-500 tracking-[0.2em] uppercase">
+                The Core Collection
+              </span>
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tighter leading-[1.1] mb-6">
+              Elevate your<br />everyday uniform.
+            </h2>
+            
+            <p className="text-base text-zinc-400 leading-relaxed mb-10 max-w-md">
+              Discover our foundational pieces designed to work together seamlessly. 
+              Premium fabrics, timeless cuts, zero compromises.
             </p>
-            <p className="mt-4 text-lg text-gray-500">
-              Descubre nuestra nueva línea de prendas diseñadas para brindarte comodidad y estilo. Colores vibrantes y texturas suaves que te encantarán.
-            </p>
-            <div className="mt-8">
-              <Link href="/nosotros" className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors">
-                Conoce Más
+            
+            <div>
+              <Link 
+                href="/colecciones" 
+                className="group inline-flex items-center gap-2 bg-white text-zinc-950 hover:bg-zinc-200 px-8 py-4 rounded-lg font-bold text-sm transition-colors btn-press"
+              >
+                Shop Essentials
+                <ArrowRight size={16} strokeWidth={2.5} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
+          
         </div>
       </div>
     </section>

@@ -10,6 +10,7 @@ import { paymentsApi } from '@/lib/api';
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { Minus, Plus, Trash2, ShoppingBag, X, Lock, MessageCircle, AlertCircle, ShieldCheck, Truck, MapPin, User as UserIcon } from 'lucide-react';
 
 export default function CarritoPage() {
   const router = useRouter();
@@ -49,336 +50,316 @@ export default function CarritoPage() {
       if (res.success && res.data?.url) {
         window.location.href = res.data.url;
       } else {
-        setCheckoutError(res.message || 'No se pudo iniciar el proceso de pago.');
+        setCheckoutError(res.message || 'Payment initiation failed.');
       }
     } catch (error: any) {
-      setCheckoutError('Error al conectar con el servidor de pagos.');
+      setCheckoutError('Error connecting to payment server.');
     } finally {
       setCheckoutLoading(false);
     }
   };
 
-    const handleWhatsAppOrder = (e: React.FormEvent) => {
-      e.preventDefault();
+  const handleWhatsAppOrder = (e: React.FormEvent) => {
+    e.preventDefault();
 
-      const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "1234567890";
-      const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
+    const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "1234567890";
+    const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
 
-      // Emojis definidos dinámicamente mediante códigos Unicode decimales/hexadecimales
-      // para evitar que el compilador los convierta a caracteres literales con problemas de codificación.
-      const emojiStar = String.fromCodePoint(0x1F31F);      // 🌟
-      const emojiUser = String.fromCodePoint(0x1F464);      // 👤
-      const emojiPin = String.fromCodePoint(0x1F4CD);       // 📍
-      const emojiHouse = String.fromCodePoint(0x1F3E0);     // 🏠
-      const emojiChat = String.fromCodePoint(0x1F4AC);      // 💬
-      const emojiCart = String.fromCodePoint(0x1F6D2);      // 🛒
-      const emojiMoneyBill = String.fromCodePoint(0x1F4B5); // 💵
-      const emojiTruck = String.fromCodePoint(0x1F69A);     // 🚚
-      const emojiMoneyBag = String.fromCodePoint(0x1F4B0);  // 💰
-      const bullet = String.fromCodePoint(0x2022);          // •
+    const itemsText = cartItems.map(item => {
+      const priceValue = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+      const totalItemPrice = priceValue * item.quantity;
+      return `▪ *${item.name}* (x${item.quantity}) - $${totalItemPrice.toFixed(2)}`;
+    }).join('\n');
 
-      const itemsText = cartItems.map(item => {
-        const priceValue = parseFloat(item.price.replace(/[^0-9.]/g, ''));
-        const totalItemPrice = priceValue * item.quantity;
-        return `${bullet} *${item.name}* (x${item.quantity}) - $${totalItemPrice.toFixed(2)}`;
-      }).join('\n');
+    const message = `*NEW ORDER — KOVA COLLECTIVE*
 
-      const message = `${emojiStar} *¡NUEVO PEDIDO - ALANYS FASHION!* ${emojiStar}
+Hello, I'd like to place an order:
 
-Hola, me gustaría realizar un pedido con los siguientes detalles:
-
-${emojiUser} *Cliente:* ${customerName}
-${emojiPin} *Método:* ${deliveryMethod === 'envio' ? 'Envío a domicilio' : 'Retiro en local'}
-${deliveryMethod === 'envio' ? `${emojiHouse} *Dirección:* ${deliveryAddress}\n` : ''}${emojiChat} *Notas:* ${additionalNotes || 'Ninguna'}
+*Customer:* ${customerName}
+*Method:* ${deliveryMethod === 'envio' ? 'Home Delivery' : 'Store Pickup'}
+${deliveryMethod === 'envio' ? `*Address:* ${deliveryAddress}\n` : ''}*Notes:* ${additionalNotes || 'None'}
 
 ------------------------------------------
-${emojiCart} *Detalle de mi Carrito:*
+*Cart Details:*
 
 ${itemsText}
 
 ------------------------------------------
-${emojiMoneyBill} *Subtotal:* $${cartTotal.toFixed(2)}
-${emojiTruck} *Envío:* ¡Gratis!
-${emojiMoneyBag} *Total Neto:* $${cartTotal.toFixed(2)}
+*Subtotal:* $${cartTotal.toFixed(2)}
+*Shipping:* Free
+*Total:* $${cartTotal.toFixed(2)}
 
-Quedo atenta/o a la confirmación del pedido y los datos de pago. ¡Muchas gracias!`;
+Please let me know the next steps for payment. Thank you!`;
 
-      const encodedMessage = encodeURIComponent(message);
-      const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedMessage}`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedMessage}`;
 
-      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      setIsModalOpen(false);
-    };
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    setIsModalOpen(false);
+  };
 
   return (
-    <div className="min-h-screen bg-background text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
+    <div className="min-h-screen bg-zinc-950 text-white selection:bg-amber-600/30">
       <Navbar />
-      <main className="pt-32 pb-20 px-6 max-w-7xl mx-auto min-h-screen">
+      <main className="pt-32 pb-24 px-6 max-w-7xl mx-auto min-h-[100dvh]">
         <header className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-black text-primary tracking-tight mb-2">Tu Carrito de Compras</h1>
-          <p className="text-on-surface-variant font-medium">¡Estás a un paso de hacer brillar tu estilo!</p>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-2">Shopping Bag</h1>
+          <p className="text-zinc-400 font-light text-lg">Review your items before checkout.</p>
         </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        {/* Items Section */}
-        <div className="lg:col-span-8 space-y-6">
-          {!mounted ? (
-            <div className="bg-surface-container-lowest rounded-lg p-12 text-center border border-outline-variant shadow-[0_8px_30px_rgb(224,64,160,0.08)] flex flex-col items-center justify-center gap-4">
-              <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-              <p className="font-bold text-on-surface-variant">Cargando detalles de tu carrito...</p>
-            </div>
-          ) : cartItems.length === 0 ? (
-            <div className="bg-surface-container-lowest rounded-lg p-12 text-center shadow-[0_8px_30px_rgb(224,64,160,0.08)] border border-outline-variant">
-              <span className="material-symbols-outlined text-6xl text-primary mb-4">shopping_bag</span>
-              <h2 className="text-2xl font-bold text-on-surface mb-2">Tu carrito está vacío</h2>
-              <p className="text-on-surface-variant mb-6">Parece que aún no has agregado nada. ¡Descubre nuestras colecciones!</p>
-              <Link href="/" className="inline-block bg-primary text-on-primary px-8 py-3 rounded-lg font-bold candy-shadow-primary hover:scale-105 transition-all">
-                Ir a Comprar
-              </Link>
-            </div>
-          ) : (
-            cartItems.map((item) => (
-              <div key={item.id} className="bg-surface-container-lowest rounded-lg p-6 shadow-[0_8px_30px_rgb(224,64,160,0.08)] flex items-center gap-6 bouncy-hover border border-outline-variant">
-                <div className="relative h-24 w-24 flex-shrink-0">
-                  <Image 
-                    src={item.image} 
-                    alt={item.name} 
-                    fill 
-                    className="h-full w-full object-cover rounded-lg"
-                    sizes="96px"
-                  />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          {/* Items Section */}
+          <div className="lg:col-span-7 xl:col-span-8 space-y-6">
+            {!mounted ? (
+              <div className="w-full aspect-[2/1] bg-zinc-900/50 rounded-2xl border border-zinc-800 animate-pulse flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-zinc-800 border-t-zinc-600 rounded-full animate-spin" />
+              </div>
+            ) : cartItems.length === 0 ? (
+              <div className="bg-zinc-900/30 rounded-2xl p-16 text-center border border-zinc-800 border-dashed">
+                <ShoppingBag size={48} className="mx-auto text-zinc-700 mb-6" strokeWidth={1} />
+                <h2 className="text-2xl font-black text-white mb-3">Your bag is empty</h2>
+                <p className="text-zinc-500 mb-8 max-w-sm mx-auto">Looks like you haven't added any items yet. Discover our latest drops.</p>
+                <Link href="/catalogo" className="inline-flex items-center justify-center bg-white hover:bg-zinc-200 text-zinc-950 px-8 py-4 rounded-lg font-bold text-sm transition-colors btn-press">
+                  Shop Collection
+                </Link>
+              </div>
+            ) : (
+              <div className="divide-y divide-zinc-900 border-y border-zinc-900">
+                {cartItems.map((item) => (
+                  <div key={item.id} className="py-8 flex items-start gap-6 group">
+                    <div className="relative h-32 w-24 sm:h-40 sm:w-32 flex-shrink-0 bg-zinc-900 rounded-lg overflow-hidden">
+                      <Image 
+                        src={item.image} 
+                        alt={item.name} 
+                        fill 
+                        className="object-cover"
+                        sizes="(max-width: 640px) 96px, 128px"
+                      />
+                    </div>
+                    
+                    <div className="flex-grow flex flex-col h-full justify-between">
+                      <div className="flex justify-between items-start gap-4">
+                        <div>
+                          <h3 className="font-bold text-lg text-white mb-1 group-hover:text-amber-500 transition-colors">{item.name}</h3>
+                          <p className="text-zinc-500 text-xs uppercase tracking-widest font-bold">Limited Run</p>
+                        </div>
+                        <span className="text-lg font-mono font-bold text-amber-500">{item.price}</span>
+                      </div>
+                      
+                      <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex items-center bg-zinc-900 rounded-lg border border-zinc-800 p-1">
+                          <button 
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            className="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+                          >
+                            <Minus size={14} />
+                          </button>
+                          <span className="w-8 text-center font-mono font-bold text-sm text-white">{item.quantity}</span>
+                          <button 
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            className="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+                          >
+                            <Plus size={14} />
+                          </button>
+                        </div>
+                        <button 
+                          onClick={() => removeFromCart(item.id)}
+                          className="text-zinc-500 hover:text-red-400 flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest transition-colors btn-press"
+                        >
+                          <Trash2 size={14} /> Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Summary Section */}
+          {mounted && cartItems.length > 0 && (
+            <div className="lg:col-span-5 xl:col-span-4">
+              <div className="bg-zinc-900/50 rounded-2xl p-8 sticky top-32 border border-zinc-800">
+                <h2 className="text-xl font-black text-white mb-6 uppercase tracking-widest">Order Summary</h2>
+                
+                <div className="space-y-4 mb-8 text-sm">
+                  <div className="flex justify-between text-zinc-400">
+                    <span>Subtotal</span>
+                    <span className="font-mono text-white">${cartTotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-400">
+                    <span>Shipping</span>
+                    <span className="text-amber-500 font-medium">Complimentary</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-400">
+                    <span>Taxes</span>
+                    <span className="font-mono text-white">Calculated at checkout</span>
+                  </div>
+                  
+                  <div className="pt-6 border-t border-zinc-800 flex justify-between items-end">
+                    <span className="font-bold text-white uppercase tracking-widest text-xs">Total</span>
+                    <span className="text-3xl font-mono font-black text-amber-500">${cartTotal.toFixed(2)}</span>
+                  </div>
                 </div>
-                <div className="flex-grow">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-bold text-xl text-on-surface">{item.name}</h3>
-                      <p className="text-secondary font-medium">Edición Limitada</p>
+
+                <div className="space-y-3">
+                  {checkoutError && (
+                    <div className="p-3 bg-red-950/50 border border-red-900/50 text-red-200 rounded-lg text-xs font-medium flex items-start gap-2">
+                      <AlertCircle size={14} className="shrink-0 mt-0.5" />
+                      {checkoutError}
                     </div>
-                    <span className="text-xl font-black text-primary">{item.price}</span>
-                  </div>
-                  <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center bg-surface-container-high rounded-lg px-4 py-1 gap-4">
-                      <button 
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="text-primary hover:scale-125 transition-transform"
-                      >
-                        <span className="material-symbols-outlined text-sm">remove</span>
-                      </button>
-                      <span className="font-bold text-on-surface">{item.quantity}</span>
-                      <button 
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="text-primary hover:scale-125 transition-transform"
-                      >
-                        <span className="material-symbols-outlined text-sm">add</span>
-                      </button>
-                    </div>
-                    <button 
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-error flex items-center gap-1 text-sm font-bold opacity-70 hover:opacity-100 transition-opacity"
-                    >
-                      <span className="material-symbols-outlined text-sm">delete</span> Eliminar
-                    </button>
-                  </div>
+                  )}
+
+                  <button
+                    onClick={handleStripeCheckout}
+                    disabled={checkoutLoading}
+                    className="w-full bg-white hover:bg-zinc-200 text-zinc-950 py-4 rounded-lg font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 btn-press disabled:opacity-50"
+                  >
+                    {checkoutLoading ? (
+                      <div className="w-5 h-5 border-2 border-zinc-950/30 border-t-zinc-950 rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        {isAuthenticated ? 'Checkout Securely' : 'Sign In to Checkout'}
+                        <Lock size={16} strokeWidth={2} />
+                      </>
+                    )}
+                  </button>
+                  
+                  <button 
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white py-4 rounded-lg font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 btn-press"
+                  >
+                    <MessageCircle size={16} strokeWidth={2} />
+                    Order via WhatsApp
+                  </button>
+                </div>
+                
+                <div className="mt-8 flex items-center justify-center gap-2 text-zinc-600">
+                  <ShieldCheck size={14} />
+                  <p className="text-[10px] font-bold uppercase tracking-widest">
+                    Secure Encrypted Checkout
+                  </p>
                 </div>
               </div>
-            ))
+            </div>
           )}
         </div>
+      </main>
+      <Footer />
 
-        {/* Summary Section */}
-        {mounted && cartItems.length > 0 && (
-          <div className="lg:col-span-4">
-            <div className="bg-surface-container-low rounded-lg p-8 sticky top-32 shadow-[0_20px_50px_rgba(124,82,170,0.1)] border border-white">
-              <h2 className="text-2xl font-black text-on-surface mb-6">Resumen</h2>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex justify-between text-on-surface-variant font-medium">
-                  <span>Subtotal</span>
-                  <span>${cartTotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-on-surface-variant font-medium">
-                  <span>Envío</span>
-                  <span className="text-tertiary">¡Gratis!</span>
-                </div>
-                <div className="flex justify-between text-on-surface-variant font-medium">
-                  <span>Descuento Candy</span>
-                  <span className="text-primary bg-primary-container px-2 rounded-lg">-$0.00</span>
-                </div>
-                
-                <div className="pt-4 border-t border-outline-variant flex justify-between items-end">
-                  <span className="text-xl font-bold text-on-surface">Total</span>
-                  <span className="text-3xl font-black text-primary">${cartTotal.toFixed(2)}</span>
-                </div>
+      {/* WhatsApp Order Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 backdrop-blur-md p-4 animate-fade-in-up">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
+            
+            <div className="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-900">
+              <div>
+                <h3 className="text-xl font-black text-white">Order Details</h3>
+                <p className="text-zinc-400 text-xs mt-1">Complete info to send via WhatsApp</p>
               </div>
-
-              <div className="space-y-4">
-                {checkoutError && (
-                  <div className="p-3 bg-error-container text-on-error-container rounded-lg text-sm font-bold flex items-center gap-2">
-                    <span className="material-symbols-outlined text-base">error</span>
-                    {checkoutError}
-                  </div>
-                )}
-                <button
-                  onClick={handleStripeCheckout}
-                  disabled={checkoutLoading}
-                  className="w-full bg-primary text-on-primary py-4 rounded-lg font-black text-lg shadow-[0_8px_20px_rgba(224,64,160,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:pointer-events-none"
-                >
-                  {checkoutLoading ? (
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      {isAuthenticated ? 'Pagar con Stripe' : 'Iniciar sesión para pagar'}
-                      <span className="material-symbols-outlined text-base">lock</span>
-                    </>
-                  )}
-                </button>
-                
-                <button 
-                  onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-[#25D366] text-white py-4 rounded-lg font-black text-lg shadow-[0_8px_20px_rgba(37,211,102,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.187-2.59-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.513-2.961-2.628-.086-.115-.718-.954-.718-1.817 0-.863.454-1.287.614-1.46.16-.173.348-.217.465-.217h.354c.113 0 .262-.045.41.32.148.365.511 1.242.556 1.334.045.092.075.198.015.32s-.09.198-.18.305c-.09.106-.188.235-.269.317-.09.09-.185.188-.08.371.106.183.47 1.055 1.001 1.527.684.608 1.26.797 1.442.887.183.09.293.075.402-.045.109-.12.463-.538.586-.721.123-.183.246-.152.413-.09.167.062 1.065.502 1.25.594.185.092.308.138.354.217.045.078.045.454-.099.859zM12 2C6.477 2 2 6.477 2 12c0 1.891.526 3.658 1.438 5.17L2 22l4.957-1.301C8.415 21.528 10.134 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.714 0-3.313-.483-4.668-1.314l-.335-.205-2.77.727.74-2.703-.226-.359C4.048 14.864 3.5 13.5 3.5 12c0-4.687 3.813-8.5 8.5-8.5s8.5 3.813 8.5 8.5-3.813 8.5-8.5 8.5z"></path>
-                  </svg>
-                  Pedir por WhatsApp
-                </button>
-              </div>
-              
-              <p className="mt-6 text-center text-xs font-bold text-zinc-400 uppercase tracking-widest">
-                Pago 100% Seguro
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    </main>
-    <Footer />
-
-    {/* WhatsApp Order Modal */}
-    {isModalOpen && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl w-full max-w-lg shadow-[0_20px_50px_rgba(122,83,101,0.2)] overflow-hidden transition-all duration-300">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-primary to-primary-container p-6 text-white flex justify-between items-center">
-            <div>
-              <h3 className="text-2xl font-black tracking-tight">Confirmar Pedido</h3>
-              <p className="text-white/80 text-sm font-medium">Completa tus datos para enviar por WhatsApp</p>
-            </div>
-            <button 
-              onClick={() => setIsModalOpen(false)}
-              className="text-white/85 hover:text-white hover:scale-110 transition-transform cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-2xl">close</span>
-            </button>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleWhatsAppOrder} className="p-6 space-y-6">
-            {/* Nombre */}
-            <div className="space-y-2">
-              <label htmlFor="customerName" className="block text-sm font-bold text-on-surface-variant uppercase tracking-wider">
-                Nombre Completo *
-              </label>
-              <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary/60">person</span>
-                <input
-                  type="text"
-                  id="customerName"
-                  required
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="Ej. María Pérez"
-                  className="w-full bg-surface-container-low border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface font-semibold focus:outline-none focus:border-primary transition-colors placeholder:text-zinc-400"
-                />
-              </div>
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                className="text-zinc-500 hover:text-white p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+              >
+                <X size={20} />
+              </button>
             </div>
 
-            {/* Método de Entrega */}
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-on-surface-variant uppercase tracking-wider">
-                Método de Entrega
-              </label>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setDeliveryMethod('envio')}
-                  className={`p-4 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all font-black cursor-pointer ${
-                    deliveryMethod === 'envio'
-                      ? 'border-primary bg-primary/5 text-primary shadow-[0_4px_15px_rgba(122,83,101,0.1)]'
-                      : 'border-outline-variant bg-transparent text-on-surface-variant hover:border-primary/50'
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-2xl">local_shipping</span>
-                  Envío a Domicilio
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDeliveryMethod('retiro')}
-                  className={`p-4 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all font-black cursor-pointer ${
-                    deliveryMethod === 'retiro'
-                      ? 'border-primary bg-primary/5 text-primary shadow-[0_4px_15px_rgba(122,83,101,0.1)]'
-                      : 'border-outline-variant bg-transparent text-on-surface-variant hover:border-primary/50'
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-2xl">storefront</span>
-                  Retiro en Local
-                </button>
-              </div>
-            </div>
-
-            {/* Dirección de Envío */}
-            {deliveryMethod === 'envio' && (
-              <div className="space-y-2">
-                <label htmlFor="deliveryAddress" className="block text-sm font-bold text-on-surface-variant uppercase tracking-wider">
-                  Dirección de Envío *
+            <form onSubmit={handleWhatsAppOrder} className="p-6 space-y-6">
+              <div className="space-y-1.5">
+                <label htmlFor="customerName" className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">
+                  Full Name *
                 </label>
                 <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3 top-4 text-primary/60">location_on</span>
+                  <UserIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+                  <input
+                    type="text"
+                    id="customerName"
+                    required
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    placeholder="Jane Doe"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all placeholder:text-zinc-700"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">
+                  Delivery Method
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryMethod('envio')}
+                    className={`p-4 rounded-xl border flex flex-col items-center justify-center gap-2 transition-all font-bold text-xs cursor-pointer ${
+                      deliveryMethod === 'envio'
+                        ? 'border-amber-600 bg-amber-600/10 text-amber-500'
+                        : 'border-zinc-800 bg-zinc-950 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300'
+                    }`}
+                  >
+                    <Truck size={20} />
+                    Home Delivery
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryMethod('retiro')}
+                    className={`p-4 rounded-xl border flex flex-col items-center justify-center gap-2 transition-all font-bold text-xs cursor-pointer ${
+                      deliveryMethod === 'retiro'
+                        ? 'border-amber-600 bg-amber-600/10 text-amber-500'
+                        : 'border-zinc-800 bg-zinc-950 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300'
+                    }`}
+                  >
+                    <MapPin size={20} />
+                    Store Pickup
+                  </button>
+                </div>
+              </div>
+
+              {deliveryMethod === 'envio' && (
+                <div className="space-y-1.5">
+                  <label htmlFor="deliveryAddress" className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">
+                    Delivery Address *
+                  </label>
                   <textarea
                     id="deliveryAddress"
                     required={deliveryMethod === 'envio'}
                     value={deliveryAddress}
                     onChange={(e) => setDeliveryAddress(e.target.value)}
-                    placeholder="Dirección completa, ciudad y referencias de entrega..."
+                    placeholder="Full street address, city, zip code..."
                     rows={3}
-                    className="w-full bg-surface-container-low border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface font-semibold focus:outline-none focus:border-primary transition-colors placeholder:text-zinc-400 resize-none"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all placeholder:text-zinc-700 resize-none"
                   />
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Notas Adicionales */}
-            <div className="space-y-2">
-              <label htmlFor="additionalNotes" className="block text-sm font-bold text-on-surface-variant uppercase tracking-wider">
-                Notas Adicionales (Opcional)
-              </label>
-              <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-4 text-primary/60">chat</span>
+              <div className="space-y-1.5">
+                <label htmlFor="additionalNotes" className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">
+                  Notes (Optional)
+                </label>
                 <textarea
                   id="additionalNotes"
                   value={additionalNotes}
                   onChange={(e) => setAdditionalNotes(e.target.value)}
-                  placeholder="Tallas, colores específicos o indicaciones extras..."
+                  placeholder="Special instructions..."
                   rows={2}
-                  className="w-full bg-surface-container-low border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface font-semibold focus:outline-none focus:border-primary transition-colors placeholder:text-zinc-400 resize-none"
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all placeholder:text-zinc-700 resize-none"
                 />
               </div>
-            </div>
 
-            {/* Botón de Enviar */}
-            <button
-              type="submit"
-              className="w-full bg-[#25D366] text-white py-4 rounded-xl font-black text-lg shadow-[0_8px_20px_rgba(37,211,102,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 mt-4 cursor-pointer"
-            >
-              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.187-2.59-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.513-2.961-2.628-.086-.115-.718-.954-.718-1.817 0-.863.454-1.287.614-1.46.16-.173.348-.217.465-.217h.354c.113 0 .262-.045.41.32.148.365.511 1.242.556 1.334.045.092.075.198.015.32s-.09.198-.18.305c-.09.106-.188.235-.269.317-.09.09-.185.188-.08.371.106.183.47 1.055 1.001 1.527.684.608 1.26.797 1.442.887.183.09.293.075.402-.045.109-.12.463-.538.586-.721.123-.183.246-.152.413-.09.167.062 1.065.502 1.25.594.185.092.308.138.354.217.045.078.045.454-.099.859zM12 2C6.477 2 2 6.477 2 12c0 1.891.526 3.658 1.438 5.17L2 22l4.957-1.301C8.415 21.528 10.134 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.714 0-3.313-.483-4.668-1.314l-.335-.205-2.77.727.74-2.703-.226-.359C4.048 14.864 3.5 13.5 3.5 12c0-4.687 3.813-8.5 8.5-8.5s8.5 3.813 8.5 8.5-3.813 8.5-8.5 8.5z"></path>
-              </svg>
-              Enviar a WhatsApp
-            </button>
-          </form>
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="w-full bg-amber-600 hover:bg-amber-700 text-zinc-950 py-4 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-2 btn-press"
+                >
+                  <MessageCircle size={16} strokeWidth={2.5} />
+                  Send to WhatsApp
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
   );
 }

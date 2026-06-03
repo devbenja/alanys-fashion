@@ -1,198 +1,200 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import { Star, Ticket, Package, MapPin, CreditCard, Settings, Headset, Crown, Edit2 } from 'lucide-react';
 
 export default function MiPerfilPage() {
   return (
-    <div className="bg-background text-on-background min-h-screen pb-24 md:pb-0 font-['DM_Sans']">
+    <div className="bg-zinc-950 text-white min-h-screen pb-24 md:pb-0">
       <Navbar />
       
-      {/* Añadimos un pequeño padding superior porque el Navbar es fixed */}
-      <main className="max-w-7xl mx-auto px-6 py-10 pt-28">
-        {/* Hero Profile Section */}
-        <section className="relative mb-12">
-          <div className="w-full h-48 md:h-64 rounded-lg overflow-hidden relative shadow-lg shadow-primary/5">
+      <main className="max-w-7xl mx-auto px-6 py-10 pt-32 min-h-[100dvh]">
+        {/* Profile Header */}
+        <section className="relative mb-16">
+          <div className="w-full h-48 md:h-64 rounded-2xl overflow-hidden relative border border-zinc-800">
             <Image 
               fill
               sizes="100vw"
-              className="object-cover" 
-              alt="Fashion texture background" 
-              src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1200&auto=format&fit=crop" 
+              className="object-cover grayscale opacity-60" 
+              alt="Editorial texture" 
+              src="https://picsum.photos/seed/kova-profile-bg/1200/400" 
               priority
             />
-            {/* Dark overlay for better contrast if needed */}
-            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-transparent" />
           </div>
           
-          <div className="absolute -bottom-10 left-8 flex items-end gap-4 md:gap-6">
+          <div className="absolute -bottom-12 left-8 md:left-12 flex items-end gap-6">
             <div className="relative">
-              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 md:border-8 border-background overflow-hidden shadow-xl relative bg-surface-container">
+              <div className="w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-zinc-950 overflow-hidden relative bg-zinc-900 shadow-2xl">
                 <Image 
                   fill
-                  sizes="(max-width: 768px) 128px, 160px"
-                  className="object-cover" 
-                  alt="Sarah Sweet Avatar" 
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop" 
+                  sizes="(max-width: 768px) 112px, 144px"
+                  className="object-cover grayscale" 
+                  alt="Avatar" 
+                  src="https://picsum.photos/seed/kova-avatar/400/400" 
                 />
               </div>
-              <button className="absolute bottom-2 right-2 bg-primary text-on-primary p-2 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center">
-                <span className="material-symbols-outlined text-sm">edit</span>
+              <button className="absolute bottom-1 right-1 bg-white hover:bg-zinc-200 text-zinc-950 p-2 rounded-full shadow-lg transition-transform btn-press" aria-label="Edit Profile">
+                <Edit2 size={14} strokeWidth={2.5} />
               </button>
             </div>
             
-            <div className="mb-12 md:mb-14">
-              <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight drop-shadow-lg">Hola, Sarah!</h1>
-              <p className="text-white/90 font-medium drop-shadow-md">Fashion Insider desde 2023</p>
+            <div className="mb-14">
+              <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter">Jane Doe</h1>
+              <p className="text-zinc-400 font-light mt-1 text-sm md:text-base">Member since 2024</p>
             </div>
           </div>
         </section>
 
-        {/* My Sweet Stats (Bento Grid Style) -> Mis Estadísticas de Estilo */}
-        <section className="mt-20 mb-12">
-          <h2 className="text-2xl font-black text-primary mb-6 flex items-center gap-2">
-            <span className="material-symbols-outlined">star_rate</span>
-            Mis Estadísticas de Estilo
-          </h2>
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-24">
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Candy Points -> Alanys Points */}
-            <div className="bg-primary text-on-primary p-8 rounded-lg hover:scale-[1.02] transition-transform duration-300 shadow-md flex flex-col justify-between overflow-hidden relative group">
-              <div className="relative z-10">
-                <p className="text-sm font-bold uppercase tracking-widest opacity-80">Alanys Points</p>
-                <h3 className="text-5xl font-black mt-2">1,250</h3>
-                <p className="text-xs mt-4 font-medium">
-                  Estás a solo 250 puntos de tu <br />
-                  <strong>¡Envío Gratis Premium!</strong>
-                </p>
-              </div>
-              <button className="mt-6 bg-surface-container-lowest text-primary font-bold py-3 px-6 rounded-lg w-fit hover:bg-opacity-90 transition-all shadow-sm">
-                Canjear Ahora
-              </button>
-              <span className="material-symbols-outlined absolute -bottom-8 -right-8 text-[160px] opacity-10 pointer-events-none group-hover:scale-110 transition-transform duration-500">auto_awesome</span>
-            </div>
+          {/* Main Content */}
+          <div className="flex-grow space-y-12">
+            
+            {/* Stats */}
+            <section>
+              <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                <Star size={18} className="text-amber-500" />
+                Your Rewards
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Points */}
+                <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+                  <div className="relative z-10">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">KOVA Points</p>
+                    <h3 className="text-4xl font-mono font-black mt-2 text-white">1,250</h3>
+                    <p className="text-xs text-zinc-400 mt-4 leading-relaxed">
+                      You are 250 points away from<br />
+                      <strong className="text-white">Premium Tier Status</strong>.
+                    </p>
+                  </div>
+                  <button className="mt-6 border border-zinc-700 hover:border-amber-500 hover:text-amber-500 text-zinc-300 text-xs font-bold py-3 px-6 rounded-lg w-fit transition-colors btn-press">
+                    Redeem Points
+                  </button>
+                  <Star size={120} className="absolute -bottom-8 -right-8 text-zinc-800 opacity-20 pointer-events-none group-hover:scale-110 group-hover:rotate-12 transition-transform duration-700" />
+                </div>
 
-            {/* Coupons Card */}
-            <div className="bg-secondary text-on-secondary p-8 rounded-lg hover:scale-[1.02] transition-transform duration-300 shadow-md flex flex-col justify-between overflow-hidden relative group">
-              <div className="relative z-10">
-                <p className="text-sm font-bold uppercase tracking-widest opacity-80">Cupones Activos</p>
-                <h3 className="text-5xl font-black mt-2">04</h3>
-                <div className="mt-4 flex flex-col gap-2">
-                  <span className="bg-on-secondary/20 text-xs py-1 px-3 w-fit rounded font-medium">20% Dscto. en Tienda</span>
-                  <span className="bg-on-secondary/20 text-xs py-1 px-3 w-fit rounded font-medium">Envío Gratis</span>
+                {/* Coupons */}
+                <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+                  <div className="relative z-10">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Active Offers</p>
+                    <h3 className="text-4xl font-mono font-black mt-2 text-white">02</h3>
+                    <div className="mt-4 flex flex-col gap-2">
+                      <span className="bg-amber-500/10 text-amber-500 border border-amber-500/20 text-[10px] font-bold py-1 px-2 w-fit rounded uppercase tracking-wider">20% Off Next Order</span>
+                      <span className="bg-zinc-800 text-zinc-300 border border-zinc-700 text-[10px] font-bold py-1 px-2 w-fit rounded uppercase tracking-wider">Free Shipping</span>
+                    </div>
+                  </div>
+                  <button className="mt-6 border border-zinc-700 hover:border-white text-zinc-300 hover:text-white text-xs font-bold py-3 px-6 rounded-lg w-fit transition-colors btn-press">
+                    View Wallet
+                  </button>
+                  <Ticket size={120} className="absolute -bottom-8 -right-8 text-zinc-800 opacity-20 pointer-events-none group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-700" />
                 </div>
               </div>
-              <button className="mt-6 bg-surface-container-lowest text-secondary font-bold py-3 px-6 rounded-lg w-fit hover:bg-opacity-90 transition-all shadow-sm">
-                Ver Billetera
-              </button>
-              <span className="material-symbols-outlined absolute -top-4 -right-4 text-[120px] opacity-10 rotate-12 pointer-events-none group-hover:rotate-45 transition-transform duration-500">confirmation_number</span>
-            </div>
+            </section>
 
-            {/* Quick Shortcuts */}
-            <div className="bg-surface-container p-8 rounded-lg border border-outline-variant/50 flex flex-col gap-4">
-              <p className="text-sm font-bold uppercase tracking-widest text-on-surface-variant">Accesos Rápidos</p>
-              <div className="grid grid-cols-2 gap-3 h-full">
-                <Link href="/mis-pedidos" className="flex flex-col items-center justify-center p-4 bg-surface-container-lowest rounded-lg shadow-sm border border-surface-variant hover:scale-105 transition-transform duration-300">
-                  <span className="material-symbols-outlined text-primary mb-2">receipt_long</span>
-                  <span className="text-xs font-bold text-on-surface">Mis Pedidos</span>
-                </Link>
-                <Link href="#" className="flex flex-col items-center justify-center p-4 bg-surface-container-lowest rounded-lg shadow-sm border border-surface-variant hover:scale-105 transition-transform duration-300">
-                  <span className="material-symbols-outlined text-tertiary mb-2">location_on</span>
-                  <span className="text-xs font-bold text-on-surface">Direcciones</span>
-                </Link>
-                <Link href="#" className="flex flex-col items-center justify-center p-4 bg-surface-container-lowest rounded-lg shadow-sm border border-surface-variant hover:scale-105 transition-transform duration-300">
-                  <span className="material-symbols-outlined text-secondary mb-2">payments</span>
-                  <span className="text-xs font-bold text-on-surface">Pagos</span>
-                </Link>
-                <Link href="#" className="flex flex-col items-center justify-center p-4 bg-surface-container-lowest rounded-lg shadow-sm border border-surface-variant hover:scale-105 transition-transform duration-300">
-                  <span className="material-symbols-outlined text-on-surface-variant mb-2">settings</span>
-                  <span className="text-xs font-bold text-on-surface">Ajustes</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Main Content Layout */}
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Profile Details Form */}
-          <div className="flex-grow bg-surface-container-lowest p-8 rounded-lg shadow-sm border border-surface-variant">
-            <h2 className="text-xl font-black text-on-background mb-8">Información Personal</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-on-surface-variant px-2">Nombre Completo</label>
-                <input 
-                  className="w-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface-container-lowest outline-none rounded-lg px-6 py-3 transition-all text-on-surface font-medium" 
-                  type="text" 
-                  defaultValue="Sarah Sweet" 
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-on-surface-variant px-2">Correo Electrónico</label>
-                <input 
-                  className="w-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface-container-lowest outline-none rounded-lg px-6 py-3 transition-all text-on-surface font-medium" 
-                  type="email" 
-                  defaultValue="sarah.sweet@alanysfashion.com" 
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-on-surface-variant px-2">Número de Teléfono</label>
-                <input 
-                  className="w-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface-container-lowest outline-none rounded-lg px-6 py-3 transition-all text-on-surface font-medium" 
-                  type="tel" 
-                  defaultValue="+1 (555) 123-4567" 
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-on-surface-variant px-2">Fecha de Nacimiento</label>
-                <input 
-                  className="w-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface-container-lowest outline-none rounded-lg px-6 py-3 transition-all text-on-surface font-medium" 
-                  type="text" 
-                  defaultValue="14 de Mayo, 1995" 
-                />
-              </div>
-            </div>
-            
-            <div className="mt-10 flex justify-end">
-              <button className="bg-primary text-on-primary font-black py-4 px-10 rounded-lg shadow-sm hover:scale-[1.02] active:scale-[0.98] transition-transform">
-                Guardar Cambios
-              </button>
-            </div>
-          </div>
-
-          {/* Side Information Card */}
-          <aside className="lg:w-80 flex flex-col gap-6">
-            {/* Support Card */}
-            <div className="bg-tertiary-container text-on-tertiary-container p-6 rounded-lg relative overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-              <h4 className="text-lg font-black mb-2">Soporte de Estilo</h4>
-              <p className="text-sm font-medium mb-4 opacity-90">¿Necesitas ayuda con un pedido o tienes una pregunta de estilo?</p>
-              <Link href="#" className="flex items-center gap-2 font-bold hover:underline">
-                Contactar Soporte <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </Link>
-              <span className="material-symbols-outlined absolute -bottom-4 -right-4 text-6xl opacity-20 rotate-12 pointer-events-none">support_agent</span>
-            </div>
-            
-            {/* Subscription / Loyalty Card */}
-            <div className="bg-surface-container p-6 rounded-lg border-2 border-dashed border-outline-variant">
-              <h4 className="text-sm font-black text-on-surface mb-4">Estado de Cuenta</h4>
+            {/* Profile Form */}
+            <section className="bg-zinc-900 border border-zinc-800 p-8 rounded-xl">
+              <h2 className="text-lg font-bold text-white mb-8">Personal Information</h2>
               
-              <div className="flex items-center gap-3 bg-surface-container-lowest p-3 rounded-lg shadow-sm border border-surface-variant mb-4">
-                <div className="w-10 h-10 bg-primary-container rounded-full flex items-center justify-center text-primary">
-                  <span className="material-symbols-outlined" style={{fontVariationSettings: '"FILL" 1'}}>card_membership</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">Full Name</label>
+                  <input 
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 outline-none rounded-lg px-4 py-3 transition-all text-white text-sm" 
+                    type="text" 
+                    defaultValue="Jane Doe" 
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">Email Address</label>
+                  <input 
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 outline-none rounded-lg px-4 py-3 transition-all text-white text-sm" 
+                    type="email" 
+                    defaultValue="jane.doe@example.com" 
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">Phone Number</label>
+                  <input 
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 outline-none rounded-lg px-4 py-3 transition-all text-white text-sm" 
+                    type="tel" 
+                    defaultValue="+1 (555) 000-0000" 
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">Date of Birth</label>
+                  <input 
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 outline-none rounded-lg px-4 py-3 transition-all text-white text-sm" 
+                    type="text" 
+                    defaultValue="May 14, 1995" 
+                  />
+                </div>
+              </div>
+              
+              <div className="mt-8 flex justify-end">
+                <button className="bg-white hover:bg-zinc-200 text-zinc-950 font-bold py-3 px-8 rounded-lg text-sm transition-colors btn-press">
+                  Save Changes
+                </button>
+              </div>
+            </section>
+          </div>
+
+          {/* Sidebar */}
+          <aside className="lg:w-80 flex flex-col gap-6 shrink-0">
+            {/* Quick Links */}
+            <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-xl">
+              <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">Quick Links</h3>
+              <div className="space-y-2">
+                <Link href="/mis-pedidos" className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors">
+                  <Package size={18} />
+                  <span className="text-sm font-medium">Order History</span>
+                </Link>
+                <Link href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors">
+                  <MapPin size={18} />
+                  <span className="text-sm font-medium">Saved Addresses</span>
+                </Link>
+                <Link href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors">
+                  <CreditCard size={18} />
+                  <span className="text-sm font-medium">Payment Methods</span>
+                </Link>
+                <Link href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors">
+                  <Settings size={18} />
+                  <span className="text-sm font-medium">Account Settings</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* VIP Status */}
+            <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-xl relative overflow-hidden">
+              <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">Membership</h3>
+              
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-amber-600/10 border border-amber-600/20 rounded-full flex items-center justify-center text-amber-500">
+                  <Crown size={20} />
                 </div>
                 <div>
-                  <p className="text-xs font-black text-on-surface">Alanys VIP</p>
-                  <p className="text-[10px] text-on-surface-variant uppercase tracking-tighter">Plan Activo</p>
+                  <p className="text-sm font-bold text-white">KOVA Insider</p>
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-tighter">Active Tier</p>
                 </div>
               </div>
               
-              <p className="text-xs text-on-surface-variant mb-4">Próxima evaluación: <strong>12 de Diciembre, 2024</strong></p>
-              
-              <button className="w-full text-center py-2 text-primary font-bold text-sm hover:text-on-primary-container hover:bg-primary-container/50 transition-colors rounded-lg">
-                Gestionar Membresía
+              <button className="w-full text-center py-2.5 bg-zinc-950 border border-zinc-800 hover:border-zinc-700 text-zinc-300 text-xs font-bold transition-colors rounded-lg btn-press">
+                View Benefits
               </button>
             </div>
+
+            {/* Support */}
+            <div className="bg-amber-600/10 border border-amber-600/20 text-amber-500 p-6 rounded-xl">
+              <Headset size={24} className="mb-3" />
+              <h4 className="text-sm font-bold text-amber-400 mb-1">Need assistance?</h4>
+              <p className="text-xs text-amber-500/80 mb-4">Our styling and support team is here to help.</p>
+              <Link href="/contacto" className="text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline">
+                Contact Support &rarr;
+              </Link>
+            </div>
           </aside>
+
         </div>
       </main>
     </div>

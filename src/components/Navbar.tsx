@@ -1,163 +1,267 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import {
+  Search,
+  ShoppingBag,
+  Heart,
+  User,
+  Package,
+  LogOut,
+  Settings,
+  ChevronDown,
+  X,
+  Menu,
+  MapPin,
+  Truck,
+  ShieldCheck,
+} from 'lucide-react';
 
 export default function Navbar() {
   const router = useRouter();
   const { cartCount } = useCart();
   const { user, logout, isAuthenticated } = useAuth();
-  
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 12);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLogout = async () => {
     setIsMenuOpen(false);
+    setIsMobileOpen(false);
     await logout();
     router.push('/');
   };
 
+  const navLinks = [
+    { label: 'New In', href: '/novedades' },
+    { label: 'Clothing', href: '/catalogo' },
+    { label: 'Shoes', href: '/zapatos' },
+    { label: 'Accessories', href: '/accesorios' },
+    { label: 'Sale', href: '/sale', accent: true },
+  ];
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-outline-variant bg-surface-container-lowest/80 backdrop-blur-md font-['DM_Sans'] font-medium tracking-tight shadow-sm">
-      <div className="max-w-7xl mx-auto w-full px-6 py-4 flex items-center justify-between">
-        
-        {/* Brand and Primary Nav */}
-        <div className="flex items-center gap-8">
-          <Link href="/" className="text-2xl font-black text-primary tracking-tighter hover:scale-[1.01] transition-transform">
-            AlanysFashion
-          </Link>
-          <div className="hidden md:flex items-center gap-6 font-medium tracking-tight">
-            <Link href="/novedades" className="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out">New In</Link>
-            <Link href="/catalogo" className="text-primary font-bold border-b-2 border-primary pb-1 hover:scale-105 hover:text-primary-fixed-dim transition-all duration-300 ease-out">Clothing</Link>
-            <Link href="/zapatos" className="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out">Shoes</Link>
-            <Link href="/accesorios" className="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out">Accessories</Link>
-            <Link href="/sale" className="text-on-surface-variant hover:scale-105 hover:text-primary transition-all duration-300 ease-out">Sale</Link>
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300 ${
+          scrolled
+            ? 'bg-zinc-950/95 backdrop-blur-xl border-b border-zinc-800 shadow-[0_1px_0_rgba(63,63,70,0.5)]'
+            : 'bg-transparent'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto w-full px-6 py-4 flex items-center justify-between">
+
+          {/* Brand */}
+          <div className="flex items-center gap-10">
+            <Link
+              href="/"
+              className="text-xl font-black text-white tracking-tighter hover:text-amber-500 transition-colors duration-200"
+            >
+              KOVA
+            </Link>
+
+            {/* Desktop Nav */}
+            <div className="hidden md:flex items-center gap-7">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors duration-200 ${
+                    link.accent
+                      ? 'text-amber-500 hover:text-amber-400'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-1 relative">
+            <button
+              className="p-2.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all duration-200 active:scale-95"
+              aria-label="Buscar"
+            >
+              <Search size={18} strokeWidth={2} />
+            </button>
+
+            <button
+              className="p-2.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all duration-200 active:scale-95"
+              aria-label="Favoritos"
+            >
+              <Heart size={18} strokeWidth={2} />
+            </button>
+
+            <Link
+              href="/carrito"
+              className="p-2.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all duration-200 active:scale-95 relative"
+              aria-label="Carrito"
+            >
+              <ShoppingBag size={18} strokeWidth={2} />
+              {cartCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-amber-500 text-zinc-950 text-[10px] font-black h-4 w-4 rounded-full flex items-center justify-center leading-none">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            <Link
+              href="/mis-pedidos"
+              className="p-2.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all duration-200 active:scale-95"
+              title="Mis Pedidos"
+            >
+              <Package size={18} strokeWidth={2} />
+            </Link>
+
+            {/* User Menu */}
+            {isAuthenticated && user ? (
+              <div className="relative ml-1">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 rounded-lg text-zinc-300 hover:text-white transition-all duration-200 text-sm font-medium"
+                >
+                  <User size={15} strokeWidth={2} />
+                  <span className="hidden sm:inline">{user.firstName}</span>
+                  <ChevronDown
+                    size={13}
+                    strokeWidth={2}
+                    className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+
+                {isMenuOpen && (
+                  <>
+                    <div
+                      onClick={() => setIsMenuOpen(false)}
+                      className="fixed inset-0 z-30"
+                    />
+                    <div className="absolute right-0 mt-2 w-60 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl shadow-black/50 py-2 z-40 animate-scale-in">
+                      <div className="px-4 py-3 border-b border-zinc-800">
+                        <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1">Cuenta</p>
+                        <p className="text-sm font-semibold text-white truncate">{user.firstName} {user.lastName}</p>
+                        <p className="text-xs text-zinc-500 truncate">{user.email}</p>
+                      </div>
+
+                      <div className="py-1">
+                        {user.role === 'admin' && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-amber-500 hover:bg-zinc-800 transition-colors"
+                          >
+                            <ShieldCheck size={15} strokeWidth={2} />
+                            Panel Admin
+                          </Link>
+                        )}
+                        <Link
+                          href="/mi-perfil"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+                        >
+                          <User size={15} strokeWidth={2} />
+                          Mi Perfil
+                        </Link>
+                        <Link
+                          href="/mis-pedidos"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+                        >
+                          <Package size={15} strokeWidth={2} />
+                          Mis Pedidos
+                        </Link>
+                        <Link
+                          href="/seguimiento"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+                        >
+                          <Truck size={15} strokeWidth={2} />
+                          Seguimiento
+                        </Link>
+                        <Link
+                          href="#"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+                        >
+                          <MapPin size={15} strokeWidth={2} />
+                          Direcciones
+                        </Link>
+                        <Link
+                          href="#"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+                        >
+                          <Settings size={15} strokeWidth={2} />
+                          Ajustes
+                        </Link>
+                      </div>
+
+                      <div className="border-t border-zinc-800 pt-1">
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-zinc-800 text-left transition-colors"
+                        >
+                          <LogOut size={15} strokeWidth={2} />
+                          Cerrar Sesión
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="ml-1 flex items-center gap-2 px-3 py-2 bg-amber-600 hover:bg-amber-700 text-zinc-950 rounded-lg text-sm font-bold transition-all duration-200 active:scale-95"
+              >
+                <User size={15} strokeWidth={2} />
+                <span className="hidden sm:inline">Entrar</span>
+              </Link>
+            )}
+
+            {/* Mobile hamburger */}
+            <button
+              className="md:hidden ml-1 p-2.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all"
+              onClick={() => setIsMobileOpen(!isMobileOpen)}
+              aria-label="Menu"
+            >
+              {isMobileOpen ? <X size={18} strokeWidth={2} /> : <Menu size={18} strokeWidth={2} />}
+            </button>
           </div>
         </div>
 
-        {/* Secondary Icons and User Menu */}
-        <div className="flex items-center gap-4 relative">
-          <button className="p-2 text-primary active:scale-95 transition-transform duration-200 cursor-pointer">
-            <span className="material-symbols-outlined">search</span>
-          </button>
-          
-          <button className="p-2 text-primary active:scale-95 transition-transform duration-200 cursor-pointer">
-            <span className="material-symbols-outlined">favorite</span>
-          </button>
-          
-          <Link 
-            href="/carrito"
-            className="p-2 text-primary active:scale-95 transition-transform duration-200 relative"
-          >
-            <span className="material-symbols-outlined">shopping_cart</span>
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-secondary text-on-secondary text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center animate-pulse">
-                {cartCount}
-              </span>
-            )}
-          </Link>
-
-          <Link 
-            href="/mis-pedidos"
-            className="p-2 text-primary active:scale-95 transition-transform duration-200"
-            title="Mis Pedidos"
-          >
-            <span className="material-symbols-outlined">receipt_long</span>
-          </Link>
-
-          {/* Dynamic User Profile / Login Link */}
-          {isAuthenticated && user ? (
-            <div className="relative">
-              <button 
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 text-primary active:scale-95 transition-transform duration-200 flex items-center justify-center gap-1 cursor-pointer bg-primary-container text-on-primary-container rounded-lg font-bold text-xs"
-                title={`Hola, ${user.firstName}`}
+        {/* Mobile Menu */}
+        {isMobileOpen && (
+          <div className="md:hidden bg-zinc-950 border-t border-zinc-800 px-6 py-4 space-y-1 animate-fade-in-up">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMobileOpen(false)}
+                className={`block px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  link.accent
+                    ? 'text-amber-500 hover:bg-zinc-800'
+                    : 'text-zinc-300 hover:text-white hover:bg-zinc-800'
+                }`}
               >
-                <span className="material-symbols-outlined text-lg">person</span>
-                <span className="hidden sm:inline">{user.firstName}</span>
-              </button>
-
-              {/* Floating Profile Dropdown */}
-              {isMenuOpen && (
-                <>
-                  {/* Backdrop overlay to close when clicking outside */}
-                  <div 
-                    onClick={() => setIsMenuOpen(false)} 
-                    className="fixed inset-0 z-30 cursor-default"
-                  />
-                  <div className="absolute right-0 mt-3 w-56 bg-surface border border-outline-variant rounded-lg shadow-xl py-2 z-40 animate-fade-in font-['DM_Sans']">
-                    <div className="px-4 py-2 border-b border-outline-variant">
-                      <p className="text-xs font-bold text-outline uppercase tracking-wider">Mi Cuenta</p>
-                      <p className="text-sm font-bold text-on-surface truncate">{user.firstName} {user.lastName}</p>
-                      <p className="text-xs text-on-surface-variant truncate">{user.email}</p>
-                    </div>
-
-                    <div className="py-1">
-                      {user.role === 'admin' && (
-                        <Link 
-                          href="/admin" 
-                          onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2 text-sm font-bold text-primary hover:bg-surface-container transition-colors"
-                        >
-                          <span className="material-symbols-outlined text-lg">admin_panel_settings</span>
-                          Panel Admin
-                        </Link>
-                      )}
-                      
-                      <Link 
-                        href="/mi-perfil" 
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-lg">account_circle</span>
-                        Mi Perfil
-                      </Link>
-
-                      <Link 
-                        href="/mis-pedidos" 
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-lg">receipt_long</span>
-                        Mis Pedidos
-                      </Link>
-
-                      <Link 
-                        href="/seguimiento" 
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-lg">local_shipping</span>
-                        Seguimiento
-                      </Link>
-                    </div>
-
-                    <div className="border-t border-outline-variant pt-1">
-                      <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-error-container hover:text-on-error-container font-bold text-left transition-colors cursor-pointer"
-                      >
-                        <span className="material-symbols-outlined text-lg">logout</span>
-                        Cerrar Sesión
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          ) : (
-            <Link 
-              href="/login" 
-              className="p-2 text-primary active:scale-95 transition-transform duration-200" 
-              title="Iniciar Sesión"
-            >
-              <span className="material-symbols-outlined">person</span>
-            </Link>
-          )}
-        </div>
-      </div>
-    </nav>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </nav>
+    </>
   );
 }

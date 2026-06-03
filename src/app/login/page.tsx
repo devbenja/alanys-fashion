@@ -5,22 +5,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { Mail, Phone, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
   const { login, register, loading } = useAuth();
 
-  // Mode state: login vs register
   const [isRegister, setIsRegister] = useState(false);
-
-  // Form states
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
 
-  // UI States
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -31,12 +28,12 @@ export default function LoginPage() {
     setSuccessMsg('');
 
     if (!email || !password) {
-      setErrorMsg('Por favor completa todos los campos obligatorios.');
+      setErrorMsg('Please complete all required fields.');
       return;
     }
 
     if (isRegister && (!firstName || !lastName)) {
-      setErrorMsg('Por favor ingresa tu nombre y apellido.');
+      setErrorMsg('Please enter your first and last name.');
       return;
     }
 
@@ -48,128 +45,121 @@ export default function LoginPage() {
           email,
           password,
           phone,
-          role: 'customer' // Default role
+          role: 'customer'
         });
 
         if (res.success) {
-          setSuccessMsg('¡Registro exitoso! Redirigiendo...');
-          setTimeout(() => {
-            router.push('/');
-          }, 1500);
+          setSuccessMsg('Registration successful! Redirecting...');
+          setTimeout(() => router.push('/'), 1500);
         } else {
           setErrorMsg(res.message);
         }
       } else {
         const res = await login({ email, password });
         if (res.success) {
-          setSuccessMsg('¡Sesión iniciada con éxito! Redirigiendo...');
-          setTimeout(() => {
-            router.push('/');
-          }, 1500);
+          setSuccessMsg('Login successful! Redirecting...');
+          setTimeout(() => router.push('/'), 1500);
         } else {
           setErrorMsg(res.message);
         }
       }
     } catch (err: any) {
-      setErrorMsg('Ocurrió un error inesperado al conectar con el servidor.');
+      setErrorMsg('An unexpected error occurred connecting to the server.');
     }
   };
 
   return (
-    <div className="bg-background text-on-background min-h-screen selection:bg-primary-fixed selection:text-on-primary-fixed font-['DM_Sans']">
-      <main className="flex min-h-screen md:h-screen w-full flex-col md:flex-row md:overflow-hidden">
+    <div className="bg-zinc-950 text-white min-h-screen selection:bg-amber-600/30 selection:text-white">
+      <main className="flex min-h-screen md:h-[100dvh] w-full flex-col md:flex-row md:overflow-hidden">
         
-        {/* Left Side: Lifestyle Image (Full Bleed 50%) */}
-        <section className="relative w-full md:w-1/2 min-h-[35vh] md:min-h-0 md:h-full">
-          <div className="absolute inset-0 bg-black/10 pointer-events-none z-10"></div>
+        {/* Left Side: Editorial Image */}
+        <section className="relative w-full md:w-1/2 min-h-[35vh] md:min-h-0 md:h-full border-r border-zinc-900">
           <Image 
             fill 
             priority
-            alt="Alanys Fashion Lifestyle" 
-            className="absolute inset-0 w-full h-full object-cover" 
+            alt="Editorial fashion photography" 
+            className="absolute inset-0 w-full h-full object-cover grayscale opacity-80 mix-blend-screen" 
             sizes="(max-width: 768px) 100vw, 50vw"
-            src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop" 
+            src="https://picsum.photos/seed/kova-login-bg/1000/1500" 
           />
-          {/* Floating Brand Badge */}
-          <div className="absolute top-8 left-8 bg-surface/90 backdrop-blur-md px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-20">
-            <Link href="/">
-              <span className="text-2xl font-black tracking-tighter text-primary">AlanysFashion</span>
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
+          
+          <div className="absolute top-8 left-8 z-20">
+            <Link href="/" className="text-2xl font-black tracking-tighter text-white hover:text-amber-500 transition-colors">
+              KOVA
             </Link>
           </div>
-          {/* Descriptive Overlay */}
-          <div className="absolute bottom-12 left-12 right-12 text-white drop-shadow-md z-20 hidden md:block">
-            <h2 className="text-4xl md:text-5xl font-black mb-2 leading-tight">El estilo es una actitud.</h2>
-            <p className="text-lg md:text-xl font-medium opacity-95">Descubre la colección más increíble de la temporada.</p>
+          
+          <div className="absolute bottom-12 left-12 right-12 z-20 hidden md:block">
+            <h2 className="text-4xl lg:text-5xl font-black mb-4 leading-tight tracking-tighter">
+              Join the<br /><span className="text-zinc-500">collective.</span>
+            </h2>
+            <p className="text-lg text-zinc-400 font-light max-w-sm">
+              Early access to drops. Exclusive edits. Free shipping on orders over $75.
+            </p>
           </div>
         </section>
 
-        {/* Right Side: Form Container (Full Bleed 50%) */}
-        <section className="w-full md:w-1/2 h-full overflow-y-auto flex items-center justify-center p-8 md:p-16 lg:p-24 bg-surface relative">
+        {/* Right Side: Form Container */}
+        <section className="w-full md:w-1/2 h-full overflow-y-auto flex items-center justify-center p-8 md:p-16 lg:p-24 bg-zinc-950 relative">
           
-          {/* Background Decorative Gradients */}
-          <div className="absolute top-0 left-1/2 -z-0 w-96 h-96 bg-primary-fixed/20 blur-[120px] rounded-full pointer-events-none"></div>
-          <div className="absolute bottom-0 right-0 -z-0 w-[30rem] h-[30rem] bg-tertiary-fixed/20 blur-[150px] rounded-full pointer-events-none"></div>
+          {/* Subtle glow */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-600/5 blur-[120px] rounded-full pointer-events-none" />
 
-          {/* Mobile Brand Logo */}
-          <div className="md:hidden absolute top-8 left-8 z-20 bg-surface/80 p-2 rounded-lg backdrop-blur-sm">
-            <Link href="/">
-              <span className="text-2xl font-black tracking-tighter text-primary">AlanysFashion</span>
+          <div className="md:hidden absolute top-8 left-8 z-20">
+            <Link href="/" className="text-2xl font-black tracking-tighter text-white">
+              KOVA
             </Link>
           </div>
 
-          <div className="w-full max-w-md flex flex-col z-10 relative py-8 md:py-0">
+          <div className="w-full max-w-sm flex flex-col z-10 relative py-8 md:py-0">
             
-            {/* Header */}
-            <header className="mb-8 text-center md:text-left">
-              <h1 className="text-4xl md:text-5xl font-black text-on-surface mb-3 tracking-tight">
-                {isRegister ? '¡Únete al Club!' : '¡Bienvenida!'}
+            <header className="mb-10 text-center md:text-left">
+              <h1 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tighter">
+                {isRegister ? 'Create Account' : 'Welcome Back'}
               </h1>
-              <p className="text-on-surface-variant font-medium text-lg">
+              <p className="text-zinc-400 font-light text-sm">
                 {isRegister 
-                  ? 'Regístrate para obtener 20% OFF y guardar tus pedidos.' 
-                  : '¿Lista para la nueva temporada? Inicia sesión abajo.'}
+                  ? 'Sign up to manage your orders and get early access.' 
+                  : 'Enter your credentials to access your account.'}
               </p>
             </header>
 
-            {/* Error / Success Banners */}
             {errorMsg && (
-              <div className="mb-6 p-4 bg-error-container text-on-error-container rounded-lg border-l-4 border-error text-sm font-bold flex items-center gap-2 animate-shake">
-                <span className="material-symbols-outlined text-lg">error</span>
+              <div className="mb-6 p-4 bg-red-950/50 border border-red-900/50 text-red-200 rounded-lg text-sm font-medium flex items-start gap-3">
+                <AlertCircle size={18} className="shrink-0 mt-0.5 text-red-400" />
                 {errorMsg}
               </div>
             )}
             {successMsg && (
-              <div className="mb-6 p-4 bg-primary-container text-on-primary-container rounded-lg border-l-4 border-primary text-sm font-bold flex items-center gap-2">
-                <span className="material-symbols-outlined text-lg">check_circle</span>
+              <div className="mb-6 p-4 bg-amber-950/30 border border-amber-900/30 text-amber-200 rounded-lg text-sm font-medium flex items-start gap-3">
+                <CheckCircle2 size={18} className="shrink-0 mt-0.5 text-amber-500" />
                 {successMsg}
               </div>
             )}
 
-            {/* Dynamic Form */}
             <form className="space-y-4" onSubmit={handleSubmit}>
               
               {isRegister && (
                 <div className="flex gap-4">
-                  {/* First Name */}
-                  <div className="space-y-1 flex-1">
-                    <label className="text-xs font-bold text-secondary px-2" htmlFor="firstName">Nombre</label>
+                  <div className="space-y-1.5 flex-1">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1" htmlFor="firstName">First Name</label>
                     <input 
-                      className="w-full h-12 px-4 bg-surface-container rounded-lg border-2 border-transparent focus:border-primary focus:ring-0 focus:bg-white transition-all text-on-surface text-sm placeholder:text-outline" 
+                      className="w-full h-12 px-4 bg-zinc-900 rounded-lg border border-zinc-800 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all text-white text-sm placeholder:text-zinc-600 outline-none" 
                       id="firstName" 
-                      placeholder="Alanys" 
+                      placeholder="Jane" 
                       type="text" 
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       required
                     />
                   </div>
-                  {/* Last Name */}
-                  <div className="space-y-1 flex-1">
-                    <label className="text-xs font-bold text-secondary px-2" htmlFor="lastName">Apellido</label>
+                  <div className="space-y-1.5 flex-1">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1" htmlFor="lastName">Last Name</label>
                     <input 
-                      className="w-full h-12 px-4 bg-surface-container rounded-lg border-2 border-transparent focus:border-primary focus:ring-0 focus:bg-white transition-all text-on-surface text-sm placeholder:text-outline" 
+                      className="w-full h-12 px-4 bg-zinc-900 rounded-lg border border-zinc-800 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all text-white text-sm placeholder:text-zinc-600 outline-none" 
                       id="lastName" 
-                      placeholder="García" 
+                      placeholder="Doe" 
                       type="text" 
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
@@ -179,15 +169,14 @@ export default function LoginPage() {
                 </div>
               )}
 
-              {/* Email Field */}
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-secondary px-2" htmlFor="email">Correo Electrónico</label>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1" htmlFor="email">Email Address</label>
                 <div className="relative group">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors text-lg">mail</span>
+                  <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-amber-500 transition-colors" />
                   <input 
-                    className="w-full h-12 pl-12 pr-4 bg-surface-container rounded-lg border-2 border-transparent focus:border-primary focus:ring-0 focus:bg-white transition-all text-on-surface text-sm placeholder:text-outline" 
+                    className="w-full h-12 pl-11 pr-4 bg-zinc-900 rounded-lg border border-zinc-800 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all text-white text-sm placeholder:text-zinc-600 outline-none" 
                     id="email" 
-                    placeholder="hola@alanysfashion.com" 
+                    placeholder="hello@example.com" 
                     type="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -197,15 +186,14 @@ export default function LoginPage() {
               </div>
 
               {isRegister && (
-                /* Phone Field (Optional) */
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-secondary px-2" htmlFor="phone">Teléfono (Opcional)</label>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1" htmlFor="phone">Phone (Optional)</label>
                   <div className="relative group">
-                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors text-lg">phone</span>
+                    <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-amber-500 transition-colors" />
                     <input 
-                      className="w-full h-12 pl-12 pr-4 bg-surface-container rounded-lg border-2 border-transparent focus:border-primary focus:ring-0 focus:bg-white transition-all text-on-surface text-sm placeholder:text-outline" 
+                      className="w-full h-12 pl-11 pr-4 bg-zinc-900 rounded-lg border border-zinc-800 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all text-white text-sm placeholder:text-zinc-600 outline-none" 
                       id="phone" 
-                      placeholder="+1 (555) 019-2834" 
+                      placeholder="+1 (555) 000-0000" 
                       type="tel" 
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
@@ -214,18 +202,17 @@ export default function LoginPage() {
                 </div>
               )}
               
-              {/* Password Field */}
-              <div className="space-y-1">
-                <div className="flex justify-between items-center px-2">
-                  <label className="text-xs font-bold text-secondary" htmlFor="password">Contraseña</label>
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center px-1">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest" htmlFor="password">Password</label>
                   {!isRegister && (
-                    <Link className="text-[10px] font-bold text-tertiary hover:text-primary transition-colors" href="#">¿Olvidaste tu contraseña?</Link>
+                    <Link className="text-[10px] font-bold text-zinc-500 hover:text-amber-500 transition-colors" href="#">Forgot password?</Link>
                   )}
                 </div>
                 <div className="relative group">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors text-lg">lock</span>
+                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-amber-500 transition-colors" />
                   <input 
-                    className="w-full h-12 pl-12 pr-12 bg-surface-container rounded-lg border-2 border-transparent focus:border-primary focus:ring-0 focus:bg-white transition-all text-on-surface text-sm placeholder:text-outline" 
+                    className="w-full h-12 pl-11 pr-12 bg-zinc-900 rounded-lg border border-zinc-800 focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all text-white text-sm placeholder:text-zinc-600 outline-none" 
                     id="password" 
                     placeholder="••••••••" 
                     type={showPassword ? "text" : "password"} 
@@ -234,66 +221,61 @@ export default function LoginPage() {
                     required
                   />
                   <button 
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors flex items-center justify-center" 
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors" 
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label="Toggle password visibility"
                   >
-                    <span className="material-symbols-outlined text-lg">
-                      {showPassword ? "visibility_off" : "visibility"}
-                    </span>
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
               </div>
               
-              {/* Submit Button */}
               <button 
-                className="w-full h-12 bg-primary hover:bg-primary-dim text-white font-black text-base rounded-lg shadow-md shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-6 cursor-pointer disabled:opacity-50 disabled:pointer-events-none" 
+                className="w-full h-12 bg-amber-600 hover:bg-amber-700 text-zinc-950 font-bold text-sm rounded-lg transition-all duration-200 btn-press flex items-center justify-center gap-2 mt-8 disabled:opacity-50 disabled:pointer-events-none" 
                 type="submit"
                 disabled={loading}
               >
                 {loading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <div className="w-5 h-5 border-2 border-zinc-950/30 border-t-zinc-950 rounded-full animate-spin"></div>
                 ) : (
                   <>
-                    {isRegister ? 'Registrarme' : 'Iniciar Sesión'}
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    {isRegister ? 'Create Account' : 'Sign In'}
+                    <ArrowRight size={16} strokeWidth={2.5} />
                   </>
                 )}
               </button>
             </form>
 
-            {/* Divider */}
-            <div className="relative my-8 flex items-center py-1">
-              <div className="flex-grow border-t border-outline-variant"></div>
-              <span className="flex-shrink mx-4 text-outline text-[9px] font-bold uppercase tracking-[0.2em] select-none">O continúa con</span>
-              <div className="flex-grow border-t border-outline-variant"></div>
+            <div className="relative my-8 flex items-center">
+              <div className="flex-grow border-t border-zinc-900"></div>
+              <span className="flex-shrink mx-4 text-zinc-600 text-[10px] font-bold uppercase tracking-widest">Or continue with</span>
+              <div className="flex-grow border-t border-zinc-900"></div>
             </div>
 
-            {/* Social Logins */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-8">
-              <button className="flex-1 h-12 rounded-lg border border-outline-variant flex items-center justify-center gap-2 hover:bg-surface-container transition-colors hover:scale-[1.01] active:scale-[0.99] group bg-white cursor-pointer">
+            <div className="flex gap-3 mb-8">
+              <button className="flex-1 h-12 rounded-lg border border-zinc-800 flex items-center justify-center gap-2 hover:bg-zinc-900 transition-colors btn-press">
                 <svg className="w-4 h-4" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                   <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
-                <span className="text-xs font-bold text-on-surface-variant group-hover:text-on-surface">Google</span>
+                <span className="text-xs font-bold text-zinc-400">Google</span>
               </button>
-              <button className="flex-1 h-12 rounded-lg border border-outline-variant flex items-center justify-center gap-2 hover:bg-surface-container transition-colors hover:scale-[1.01] active:scale-[0.99] group bg-white cursor-pointer">
+              <button className="flex-1 h-12 rounded-lg border border-zinc-800 flex items-center justify-center gap-2 hover:bg-zinc-900 transition-colors btn-press">
                 <svg className="w-4 h-4" fill="#1877F2" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
-                <span className="text-xs font-bold text-on-surface-variant group-hover:text-on-surface">Facebook</span>
+                <span className="text-xs font-bold text-zinc-400">Facebook</span>
               </button>
             </div>
 
-            {/* Toggle Mode Link */}
             <footer className="text-center md:text-left">
-              <p className="text-on-surface-variant font-medium text-sm">
-                {isRegister ? '¿Ya eres miembro del club?' : '¿Nueva por aquí?'} 
+              <p className="text-zinc-500 font-medium text-sm">
+                {isRegister ? 'Already have an account?' : 'New to KOVA?'} 
                 <button 
-                  className="text-primary font-black hover:underline underline-offset-4 ml-1 cursor-pointer" 
+                  className="text-amber-500 font-bold hover:text-amber-400 ml-2 transition-colors focus:outline-none" 
                   onClick={() => {
                     setIsRegister(!isRegister);
                     setErrorMsg('');
@@ -301,7 +283,7 @@ export default function LoginPage() {
                   }}
                   type="button"
                 >
-                  {isRegister ? 'Inicia Sesión' : 'Únete al Club'}
+                  {isRegister ? 'Sign In' : 'Create Account'}
                 </button>
               </p>
             </footer>

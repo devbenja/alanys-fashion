@@ -422,6 +422,10 @@ export const ordersApi = {
   cancel: async (sessionId: string) => {
     return apiRequest<void>('/orders/cancel', 'POST', { sessionId });
   },
+
+  confirm: async (sessionId: string) => {
+    return apiRequest<{ orderNumber: string }>('/orders/confirm', 'POST', { sessionId });
+  },
 };
 
 export interface AdminOrder extends Order {
